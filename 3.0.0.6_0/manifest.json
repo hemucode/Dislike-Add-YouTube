@@ -1,0 +1,32 @@
+{
+   "action": {
+      "default_popup": "popup.html"
+   },
+   "background": {
+      "service_worker": "day.background.js"
+   },
+   "content_scripts": [ {
+      "css": [ "content-style.css" ],
+      "exclude_matches": [ "*://*.music.youtube.com/*" ],
+      "js": [ "day.content-script.js" ],
+      "matches": [ "*://youtube.com/*", "*://www.youtube.com/*", "*://m.youtube.com/*" ]
+   } ],
+   "default_locale": "en",
+   "description": "__MSG_extensionDesc__",
+   "externally_connectable": {
+      "matches": [ "*://*.youtube.com/*" ]
+   },
+   "host_permissions": [ "*://*.youtube.com/*" ],
+   "icons": {
+      "128": "icons/icon128.png",
+      "48": "icons/icon48.png"
+   },
+   "manifest_version": 3,
+   "name": "__MSG_extensionName__",
+   "permissions": [ "storage" ],
+   "version": "3.0.0.6",
+   "web_accessible_resources": [ {
+      "matches": [ "*://*.youtube.com/*" ],
+      "resources": [ "day.script.js" ]
+   } ]
+}
