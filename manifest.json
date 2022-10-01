@@ -1,0 +1,24 @@
+{
+   "background": {
+      "scripts": [ "return-youtube-dislike.background.js" ]
+   },
+   "browser_action": {
+      "default_popup": "popup.html"
+   },
+   "content_scripts": [ {
+      "css": [ "content-style.css" ],
+      "exclude_matches": [ "*://*.music.youtube.com/*" ],
+      "js": [ "content-script.js" ],
+      "matches": [ "*://*.youtube.com/*" ],
+      "run_at": "document_idle"
+   } ],
+   "description": "All youtube video to show number of dislikes",
+   "icons": {
+      "128": "icons/icon128.png",
+      "48": "icons/icon48.png"
+   },
+   "manifest_version": 2,
+   "name": "Dislike Add YouTube™",
+   "permissions": [ "activeTab", "tabs", "storage", "webRequest", "webRequestBlocking", "\u003Call_urls>" ],
+   "version": "0.0.0.7"
+}
