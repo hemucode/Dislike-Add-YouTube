@@ -1,5 +1,6 @@
 domReady(() => {
   linkButton()
+  translateHTML()
   hoverButton()
 })
 
@@ -10,12 +11,19 @@ function domReady (callback) {
     window.addEventListener('load', callback, false);
   }
 }
+function translateHTML (dataKey = 'message') {
+  for (const $element of document.getElementsByTagName('*')) {
+    if ($element.dataset && $element.dataset[dataKey]) {
+      $element.innerText = chrome.i18n.getMessage($element.dataset[dataKey])
+    }
+  }
+}
 
 function linkButton() {
-  document.querySelector('.teaser').href = `https://chrome.google.com/webstore/detail/${chrome.runtime.id}/reviews`;
+  document.querySelector('.teaser').href = `https://www.downloadhub.cloud/2022/10/dislike-add-youtube.html`;
   document.querySelector('.youtube').href = `https://youtube.com/c/HemantaGayen`;
   document.querySelector('.facebook').href = `https://www.facebook.com/codehemu/`;
-  document.querySelector('.website').href = `https://www.codehemu.com/p/mytubeforyoutube.html`;
+  document.querySelector('.website').href = `https://www.downloadhub.cloud/`;
 }
 
 function hoverButton(){
@@ -57,7 +65,7 @@ function linkopen(){
 
 }
 function devoloperid(){
-    window.open("https://www.codehemu.com/p/donate.html",'_blank');
+    window.open("https://www.downloadhub.cloud/p/donation.html",'_blank');
 }
 function messageclose(){
   if (localStorage.message=="nyancat") {
@@ -67,7 +75,7 @@ function messageclose(){
   localStorage.setItem("message", "nyancat");
 }
 function headericons(){
-    window.open("https://www.codehemu.com/p/mytubeforyoutube.html",'_blank');
+    window.open("https://www.downloadhub.cloud/2022/10/dislike-add-youtube.html#CSS3",'_blank');
 }
 
 var background = (function () {
