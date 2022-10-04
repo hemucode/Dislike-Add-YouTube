@@ -1,12 +1,9 @@
 {
    "app_description": {
-      "message": "Poistaa kaikki ärsyttävät mainokset ja bannerit YouTubesta!"
+      "message": "Laajennus palauttaa mahdollisuuden nähdä, kuinka moni YouTube-video on jättänyt ei-tykkäyksiä."
    },
    "app_name": {
-      "message": "Mytube Youtube ™: lle"
-   },
-   "full_description": {
-      "message": "Mytube Youtube ™: lle -videomainosten esto on sisällön suodatus- ja estoselainlaajennus, joka estää kaikki Youtube ™ -mainokset. Sen avulla käyttäjät voivat estää sivuelementtien, kuten mainosten, näyttämisen. Banneri-, mainosleikkeet tai jopa ennakkomainokset, jotka näet yleensä ennen varsinaista YouTube-videota, on estetty tällä laajennuksella. devoloper kirjoittanut thegayen"
+      "message": "Dislikes in YouTube™"
    },
    "rate": {
       "message" :"Ole hyvä ja auta meitä"

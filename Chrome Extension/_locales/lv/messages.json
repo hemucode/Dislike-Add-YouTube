@@ -1,17 +1,14 @@
 {
    "app_description": {
-      "message": "Noņem no YouTube visas kaitinošās reklāmas un reklāmkarogus!"
+      "message": "The extension returns the ability to see how many people YouTube video  have put dislikes."
    },
    "app_name": {
-      "message": "Mytube vietnei Youtube™"
+      "message": "Dislikes in YouTube™"
    },
-   "full_description": {
-      "message": "Mytube vietnei Youtube™ ir satura filtrēšanas un reklāmu bloķēšanas pārlūka paplašinājums, kas bloķē visas Youtube ™ reklāmas. Tas ļauj lietotājiem novērst lapu elementu, piemēram, reklāmu, parādīšanu. Šis paplašinājums bloķē reklāmkarogu, reklāmas klipus vai pat iepriekšējas reklāmas, kuras parasti redzat pirms faktiskā Youtube videoklipa. devoloper by thegayen"
-   },
-   "rate": {
-      "message" :"Lūdzu, palīdziet un novērtējiet mūs"
+   "rate":{
+      "message": "Please help and rate us!"
    },
    "donate":{
-      "message" :"ziedojums"
+      "message" :"donation"
    }
 }

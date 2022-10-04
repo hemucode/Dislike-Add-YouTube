@@ -1,17 +1,14 @@
 {
    "app_description": {
-      "message": "Huondoa matangazo na mabango yote yanayokasirisha kutoka YouTube!"
+      "message": "The extension returns the ability to see how many people YouTube video  have put dislikes."
    },
    "app_name": {
-      "message": "Mytube kwa Youtube™"
+      "message": "Dislikes in YouTube™"
    },
-   "full_description": {
-      "message": "Mytube kwa Youtube™ ni kichujio cha yaliyomo na kiboreshaji cha kivinjari kinachozuia matangazo ambayo huzuia matangazo yote kwenye Youtube ™ .Inaruhusu watumiaji kuzuia vitu vya ukurasa, kama vile matangazo, visionyeshwe. Bendera, Sehemu za matangazo au hata matangazo ya mapema ambayo kawaida huona kabla ya video halisi kwenye Youtube kuzuiwa na kiendelezi hiki. devoloper na thegayen"
-   },
-   "rate": {
-      "message" :"Tafadhali tusaidie na utupime!"
+   "rate":{
+      "message": "Please help and rate us!"
    },
    "donate":{
-      "message" :"mchango"
+      "message" :"donation"
    }
 }

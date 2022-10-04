@@ -1,12 +1,9 @@
 {
    "app_description": {
-      "message": "YouTubeから迷惑な広告やバナーをすべて削除します！"
+      "message": "この拡張機能は、YouTube 動画が嫌いな人が何人いるかを確認する機能を返します。"
    },
    "app_name": {
-      "message": "Youtube™用 Mytube"
-   },
-   "full_description": {
-      "message": "Youtube™用 Mytube 上のすべての広告をブロックするコンテンツフィルタリングおよび広告ブロックブラウザ拡張機能です。これにより、ユーザーは広告などのページ要素が表示されないようにすることができます。 Youtubeの実際のビデオがこの拡張機能によってブロックされる前に通常表示されるバナー、アドクリップ、またはプレロール広告ですらあります。 thegayenによるdevoloper"
+      "message": "YouTube™ の嫌いなもの"
    },
    "rate": {
       "message" :"私たちを助け、評価してください"

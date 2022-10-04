@@ -1,12 +1,9 @@
 {
    "app_description": {
-      "message": "Hapus semua iklan dan spanduk yang mengganggu dari YouTube!"
+      "message": "Ekstensi mengembalikan kemampuan untuk melihat berapa banyak orang yang tidak disukai oleh video YouTube."
    },
    "app_name": {
-      "message": "Mytube untuk Youtube™"
-   },
-   "full_description": {
-      "message": "Mytube untuk Youtube™ adalah pemfilteran konten dan ekstensi peramban pemblokiran iklan yang memblokir semua iklan di Youtube™. Ini memungkinkan pengguna untuk mencegah elemen halaman, seperti iklan, ditampilkan. Banner, Klip Iklan atau bahkan iklan preroll yang biasa Anda lihat sebelum video sebenarnya di Youtube diblokir oleh ekstensi ini. pengembang oleh thegayen"
+      "message": "Dislikes in YouTube™"
    },
    "rate": {
       "message" :"Tolong bantu dan nilai kami"

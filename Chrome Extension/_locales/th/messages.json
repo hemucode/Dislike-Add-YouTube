@@ -1,17 +1,14 @@
 {
    "app_description": {
-      "message": "ลบโฆษณาและแบนเนอร์ที่น่ารำคาญทั้งหมดออกจาก YouTube!"
+      "message": "The extension returns the ability to see how many people YouTube video  have put dislikes."
    },
    "app_name": {
-      "message": "Mytube สำหรับ Youtube™"
+      "message": "Dislikes in YouTube™"
    },
-   "full_description": {
-      "message": "Mytube สำหรับ Youtube™ เป็นการกรองเนื้อหาและส่วนขยายเบราว์เซอร์บล็อกโฆษณาซึ่งบล็อกโฆษณาทั้งหมดบน Youtube™ อนุญาตให้ผู้ใช้ป้องกันไม่ให้แสดงองค์ประกอบของหน้า เช่น โฆษณา แบนเนอร์ คลิปโฆษณา หรือแม้แต่โฆษณาตอนต้นที่คุณมักจะเห็นก่อนที่วิดีโอจริงบน Youtube จะถูกบล็อกโดยส่วนขยายนี้ devoloper โดย thegayen"
-   },
-   "rate": {
-      "message" :"กรุณาช่วยและให้คะแนนเรา!"
+   "rate":{
+      "message": "Please help and rate us!"
    },
    "donate":{
-      "message" :"บริจาค"
+      "message" :"donation"
    }
 }

@@ -1,12 +1,9 @@
 {
    "app_description": {
-      "message": "Entfernt alle lästigen Anzeigen und Banner von YouTube!"
+      "message": "Die Erweiterung gibt die Möglichkeit zurück, zu sehen, wie viele Personen YouTube-Videos mit Abneigungen versehen haben."
    },
    "app_name": {
-      "message": "Mytube für Youtube™"
-   },
-   "full_description": {
-      "message": "Mytube für Youtube™ ist eine Browsererweiterung zum Filtern und Blockieren von Inhalten, die alle Anzeigen auf Youtube™ blockiert. Es ermöglicht Benutzern, die Anzeige von Seitenelementen wie z. B. Anzeigen zu verhindern. Banner, Ad-Clips oder auch Preroll-Anzeigen, die Sie normalerweise vor dem eigentlichen Video auf Youtube sehen, werden durch diese Erweiterung blockiert. Entwickler von thegayen"
+      "message": "Dislikes in YouTube™"
    },
    "rate": {
       "message" :"Bitte helft uns und bewertet uns"

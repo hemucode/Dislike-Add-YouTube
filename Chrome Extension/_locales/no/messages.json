@@ -1,17 +1,14 @@
 {
-  "app_name": {
-    "message": "Videoannonseblokkering for Youtube™"
-  },
-  "app_description": {
-    "message": "Mytube fra YouTube™"
-  },
-  "full_description": {
-      "message": "Mytube fra YouTube™ er en nettleserutvidelse for innholdsfiltrering og annonseblokkering som blokkerer alle annonser på Youtube ™. Den lar brukerne forhindre at sideelementer, for eksempel annonser, vises. Banner, Ad-Clips eller til og med preroll-annonser du vanligvis ser før selve videoen på Youtube blir blokkert av denne utvidelsen. devoloper av thegayen"
+   "app_description": {
+      "message": "The extension returns the ability to see how many people YouTube video  have put dislikes."
    },
-   "rate": {
-      "message" :"Hjelp oss og vurder oss!"
+   "app_name": {
+      "message": "Dislikes in YouTube™"
+   },
+   "rate":{
+      "message": "Please help and rate us!"
    },
    "donate":{
-      "message" :"donasjon"
+      "message" :"donation"
    }
 }

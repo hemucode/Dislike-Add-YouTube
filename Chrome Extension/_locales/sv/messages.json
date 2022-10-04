@@ -1,15 +1,12 @@
 {
    "app_description": {
-      "message": "Tar bort alla irriterande annonser och banners från YouTube!"
+      "message": "The extension returns the ability to see how many people YouTube video  have put dislikes."
    },
    "app_name": {
-      "message": "Mytube för Youtube™"
+      "message": "Dislikes in YouTube™"
    },
-   "full_description": {
-      "message": "Mytube för Youtube™ är ett innehållsfiltrerings- och annonsblockerande webbläsartillägg som blockerar alla annonser på Youtube ™. Det gör det möjligt för användare att förhindra att sidelement, som annonser, visas. Banner, Ad-Clips eller till och med preroll-annonser som du brukar se innan den faktiska videon på Youtube blockeras av detta tillägg. devoloper av thegayen"
-   },
-   "rate": {
-      "message" :"Snälla hjälp och betygsätt oss!"
+   "rate":{
+      "message": "Please help and rate us!"
    },
    "donate":{
       "message" :"donation"
