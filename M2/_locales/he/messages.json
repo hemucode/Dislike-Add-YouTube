@@ -1,0 +1,14 @@
+{
+   "app_description": {
+      "message": "התוסף מחזיר את היכולת לראות כמה אנשים סרטון YouTube רשם דיסלייקים."
+   },
+   "app_name": {
+      "message": "לא אהבתי ב-YouTube™"
+   },
+   "rate": {
+      "message" :"אנא עזור ודרג אותנו"
+   },
+   "donate":{
+      "message" :"תרומה"
+   }
+}

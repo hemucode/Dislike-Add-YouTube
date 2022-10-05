@@ -1,0 +1,14 @@
+{
+   "app_description": {
+      "message": "L'extension renvoie la possibilité de voir combien de personnes la vidéo YouTube a mis des aversions."
+   },
+   "app_name": {
+      "message": "N'aime pas dans YouTube™"
+   },
+   "rate": {
+      "message" :"Merci de nous aider et de nous évaluer"
+   },
+   "donate":{
+      "message" :"don"
+   }
+}

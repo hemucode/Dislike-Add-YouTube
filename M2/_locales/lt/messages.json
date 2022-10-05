@@ -1,0 +1,14 @@
+{
+   "app_description": {
+      "message": "L'estensione restituisce la possibilità di vedere quante persone video di YouTube hanno messo non mi piace."
+   },
+   "app_name": {
+      "message": "Non mi piace su YouTube™"
+   },
+   "rate": {
+      "message" :"Prašome padėti ir įvertinti mus"
+   },
+   "donate":{
+      "message" :"donorystė"
+   }
+}

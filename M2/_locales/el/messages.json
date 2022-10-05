@@ -1,0 +1,14 @@
+{
+   "app_description": {
+      "message": "Η επέκταση επιστρέφει τη δυνατότητα να δείτε πόσα άτομα βίντεο YouTube έχουν βάλει δεν μου αρέσει."
+   },
+   "app_name": {
+      "message": "Dislikes σε YouTube™"
+   },
+   "rate": {
+      "message" :"Παρακαλώ βοηθήστε"
+   },
+   "donate":{
+      "message" :"δωρεά"
+   }
+}

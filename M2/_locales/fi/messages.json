@@ -1,0 +1,14 @@
+{
+   "app_description": {
+      "message": "Laajennus palauttaa mahdollisuuden nähdä, kuinka moni YouTube-video on jättänyt ei-tykkäyksiä."
+   },
+   "app_name": {
+      "message": "Dislikes in YouTube™"
+   },
+   "rate": {
+      "message" :"Ole hyvä ja auta meitä"
+   },
+   "donate":{
+      "message" :"lahjoitus"
+   }
+}

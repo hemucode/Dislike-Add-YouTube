@@ -1,0 +1,14 @@
+{
+   "app_description": {
+      "message": "L'extensió retorna la possibilitat de veure quantes persones han posat no m'agrada el vídeo de YouTube."
+   },
+   "app_name": {
+      "message": "Dislikes in YouTube™"
+   },
+   "rate": {
+      "message" :"Ajudeu-nos i valoreu-nos"
+   },
+   "donate":{
+      "message" :"donació"
+   }
+}
