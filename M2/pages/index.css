@@ -40,7 +40,7 @@ html,body {
   margin-left: 5px;
 }
 .top-label {
-    background: #1e1d1d;
+    background: #ed2b2b;
     color: white;
     font-family: sans-serif;
     font-size: 15px;
@@ -52,6 +52,16 @@ html,body {
     justify-content: space-between;
     align-items: center;
 }
+.title {
+  border-bottom: 1px solid #cbd9e2;
+  padding-bottom: 6px;
+  text-align: justify;
+  padding: 10px;
+  background: #fff;
+}
+.title::before{
+  content: ' '
+}
 #header-icons{
     width: 45px;
     display: flex;
@@ -59,6 +69,12 @@ html,body {
     justify-content: space-around;
     position: relative;
     cursor: pointer;
+}
+.title > span {
+  padding-bottom: 6px;
+  padding-right: 6px;
+  color: #333333;
+  font-weight: normal;
 }
 .txtdiv{
   padding: 0;
@@ -140,5 +156,53 @@ html,body {
 .id:hover{ 
   color: #000;
   box-shadow: 0px 3px 8px 0px #b5b5b587;
+}
+.footer__heart
+{
+  color:#ffb3b3;
+  -webkit-animation-name:heartbeat;
+  animation-name:heartbeat;
+  -webkit-animation-duration:1.42857s;
+  animation-duration:1.42857s;
+  -webkit-animation-iteration-count:infinite;
+  animation-iteration-count:infinite;
+  -webkit-animation-timing-function:ease;
+  animation-timing-function:ease
+}
+  @-webkit-keyframes heartbeat
+{
+  0%
+{
+  color:#ffb3b3
+}
+  35%
+{
+  color:#ff1a1a
+}
+  100%
+{
+  color:#ffb3b3
+}
+
+}
+  @keyframes heartbeat
+{
+  0%
+{
+  color:#ffb3b3
+}
+  35%
+{
+  color:#ff1a1a
+}
+  100%
+{
+  color:#ffb3b3
+}
+
+}
+.devoloperid{
+  font-weight: normal;
+  cursor: pointer;  
 }
 

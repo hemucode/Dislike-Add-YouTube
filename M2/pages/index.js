@@ -1,6 +1,7 @@
 domReady(() => {
   linkButton()
   hoverButton()
+  translateHTML()
 })
 
 function domReady (callback) {
@@ -10,12 +11,19 @@ function domReady (callback) {
     window.addEventListener('load', callback, false);
   }
 }
+function translateHTML (dataKey = 'message') {
+  for (const $element of document.getElementsByTagName('*')) {
+    if ($element.dataset && $element.dataset[dataKey]) {
+      $element.innerText = chrome.i18n.getMessage($element.dataset[dataKey])
+    }
+  }
+}
 
 function linkButton() {
-  document.querySelector('.teaser').href = `https://www.codehemu.com/2022/06/how-to-enable-right-click-of-microsoft.html`;
+  document.querySelector('.teaser').href = `https://www.downloadhub.cloud/2022/10/dislike-add-youtube.html`;
   document.querySelector('.youtube').href = `https://youtube.com/c/HemantaGayen`;
   document.querySelector('.facebook').href = `https://www.facebook.com/codehemu/`;
-  document.querySelector('.website').href = `https://www.codehemu.com/`;
+  document.querySelector('.website').href = `https://www.downloadhub.cloud/`;
 }
 
 function hoverButton(){
@@ -64,7 +72,7 @@ function messageclose(){
   localStorage.setItem("message", "nyancat");
 }
 function headericons(){
-    window.open("https://www.codehemu.com/2022/06/how-to-enable-right-click-of-microsoft.html#CSS2",'_blank');
+    window.open("https://www.downloadhub.cloud/2022/10/dislike-add-youtube.html#CSS2",'_blank');
 }
 
 var background = (function () {
