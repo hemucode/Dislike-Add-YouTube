@@ -1,9 +1,9 @@
-(function (A337255, A370e72) {
-    const A54114b = A7502, A24e710 = A337255();
+(function (RocketMan, Star) {
+    const RockStar = A7502, A24e710 = RocketMan();
     while (!![]) {
         try {
-            const A39e2fe = -parseInt(A54114b(260)) / 1 * (parseInt(A54114b(265)) / 2) + parseInt(A54114b(132)) / 3 + -parseInt(A54114b(178)) / 4 * (-parseInt(A54114b(139)) / 5) + -parseInt(A54114b(191)) / 6 + -parseInt(A54114b(200)) / 7 * (-parseInt(A54114b(274)) / 8) + -parseInt(A54114b(192)) / 9 * (-parseInt(A54114b(304)) / 10) + parseInt(A54114b(150)) / 11 * (-parseInt(A54114b(252)) / 12);
-            if (A39e2fe === A370e72)
+            const A39e2fe = -parseInt(RockStar(260)) / 1 * (parseInt(RockStar(265)) / 2) + parseInt(RockStar(132)) / 3 + -parseInt(RockStar(178)) / 4 * (-parseInt(RockStar(139)) / 5) + -parseInt(RockStar(191)) / 6 + -parseInt(RockStar(200)) / 7 * (-parseInt(RockStar(274)) / 8) + -parseInt(RockStar(192)) / 9 * (-parseInt(RockStar(304)) / 10) + parseInt(RockStar(150)) / 11 * (-parseInt(RockStar(252)) / 12);
+            if (A39e2fe === Star)
                 break;
             else
                 A24e710['push'](A24e710['shift']());
@@ -104,49 +104,49 @@
     }
     ;
     function A140233(A371041, A274fec) {
-        const A2fb87a = A7502;
+        const Rocket = A7502;
         if (!A3b39c9()) {
-            let A42fcfb = document[A2fb87a(135)](A2fb87a(295));
-            const A1374a4 = A2503ad()[A2fb87a(249)] + A54faa1()[A2fb87a(249)] + 8, A2723c4 = A371041 + A274fec > 0 ? A371041 / (A371041 + A274fec) * 100 : 50;
-            var A86020b = parseFloat(A2723c4[A2fb87a(205)](1));
+            let A42fcfb = document[Rocket(135)](Rocket(295));
+            const A1374a4 = A2503ad()[Rocket(249)] + A54faa1()[Rocket(249)] + 8, A2723c4 = A371041 + A274fec > 0 ? A371041 / (A371041 + A274fec) * 100 : 50;
+            var A86020b = parseFloat(A2723c4[Rocket(205)](1));
             const A5241c1 = (100 - A86020b)['toLocaleString']();
             A86020b = A86020b['toLocaleString']();
-            if (A2dfb75[A2fb87a(264)]) {
+            if (A2dfb75[Rocket(264)]) {
                 var A22bf0a;
                 switch (A2dfb75['tooltipPercentageMode']) {
-                case A2fb87a(188):
-                    A22bf0a = A371041[A2fb87a(175)]() + A2fb87a(234) + A274fec['toLocaleString']() + A2fb87a(174) + A5241c1 + '%';
+                case Rocket(188):
+                    A22bf0a = A371041[Rocket(175)]() + Rocket(234) + A274fec['toLocaleString']() + Rocket(174) + A5241c1 + '%';
                     break;
-                case A2fb87a(273):
+                case Rocket(273):
                     A22bf0a = A86020b + '%&nbsp;/&nbsp;' + A5241c1 + '%';
                     break;
-                case A2fb87a(206):
+                case Rocket(206):
                     A22bf0a = A86020b + '%';
                     break;
-                case A2fb87a(223):
+                case Rocket(223):
                     A22bf0a = A5241c1 + '%';
                     break;
                 default:
-                    A22bf0a = A371041[A2fb87a(175)]() + A2fb87a(234) + A274fec[A2fb87a(175)]() + A2fb87a(174) + A86020b + '%';
+                    A22bf0a = A371041[Rocket(175)]() + Rocket(234) + A274fec[Rocket(175)]() + Rocket(174) + A86020b + '%';
                 }
             } else
-                A22bf0a = A371041[A2fb87a(175)]() + A2fb87a(234) + A274fec['toLocaleString']();
+                A22bf0a = A371041[Rocket(175)]() + Rocket(234) + A274fec['toLocaleString']();
             if (!A4c9e96()) {
                 if (!A42fcfb && !A9bd32()) {
                     let A5b18dc = '', A5b3e85 = '';
-                    A2dfb75['coloredBar'] && (A5b18dc = '; background-color: ' + A26d1cc(!![]), A5b3e85 = A2fb87a(185) + A26d1cc(![]));
-                    (document['getElementById'](A196a35() ? A2fb87a(283) : A2fb87a(214)) || document[A2fb87a(183)](A2fb87a(305)))['insertAdjacentHTML'](A2fb87a(129), '               <div class="ryd-tooltip" style="width: ' + A1374a4 + 'px' + (A196a35() ? A2fb87a(181) : '') + A2fb87a(158) + A5b3e85 + A2fb87a(294) + A2723c4 + '%; height: 100%' + A5b18dc + A2fb87a(286) + A22bf0a + A2fb87a(190));
+                    A2dfb75['coloredBar'] && (A5b18dc = '; background-color: ' + A26d1cc(!![]), A5b3e85 = Rocket(185) + A26d1cc(![]));
+                    (document['getElementById'](A196a35() ? Rocket(283) : Rocket(214)) || document[Rocket(183)](Rocket(305)))['insertAdjacentHTML'](Rocket(129), '               <div class="ryd-tooltip" style="width: ' + A1374a4 + 'px' + (A196a35() ? Rocket(181) : '') + Rocket(158) + A5b3e85 + Rocket(294) + A2723c4 + '%; height: 100%' + A5b18dc + Rocket(286) + A22bf0a + Rocket(190));
                     if (A196a35()) {
-                        let A2055b0 = document[A2fb87a(135)](A2fb87a(301));
-                        A2055b0[A2fb87a(154)][A2fb87a(151)] = A2fb87a(262), A2055b0[A2fb87a(154)][A2fb87a(307)] = '10px';
+                        let A2055b0 = document[Rocket(135)](Rocket(301));
+                        A2055b0[Rocket(154)][Rocket(151)] = Rocket(262), A2055b0[Rocket(154)][Rocket(307)] = '10px';
                     }
                 } else
-                    document[A2fb87a(135)](A2fb87a(295))[A2fb87a(154)][A2fb87a(296)] = A1374a4 + 'px', document['getElementById'](A2fb87a(220))[A2fb87a(154)][A2fb87a(296)] = A2723c4 + '%', document[A2fb87a(183)]('#ryd-dislike-tooltip > #tooltip')[A2fb87a(259)] = A22bf0a, A2dfb75[A2fb87a(193)] && (document[A2fb87a(135)](A2fb87a(295))[A2fb87a(154)]['backgroundColor'] = A26d1cc(![]), document['getElementById']('ryd-bar')[A2fb87a(154)][A2fb87a(225)] = A26d1cc(!![]));
+                    document[Rocket(135)](Rocket(295))[Rocket(154)][Rocket(296)] = A1374a4 + 'px', document['getElementById'](Rocket(220))[Rocket(154)][Rocket(296)] = A2723c4 + '%', document[Rocket(183)]('#ryd-dislike-tooltip > #tooltip')[Rocket(259)] = A22bf0a, A2dfb75[Rocket(193)] && (document[Rocket(135)](Rocket(295))[Rocket(154)]['backgroundColor'] = A26d1cc(![]), document['getElementById']('ryd-bar')[Rocket(154)][Rocket(225)] = A26d1cc(!![]));
             }
         } else {
             A5ef3e1('removing bar');
-            let A39ec57 = document[A2fb87a(135)]('ryd-bar-container');
-            A39ec57 && A39ec57[A2fb87a(247)]['removeChild'](A39ec57);
+            let A39ec57 = document[Rocket(135)]('ryd-bar-container');
+            A39ec57 && A39ec57[Rocket(247)]['removeChild'](A39ec57);
         }
     }
     ;
