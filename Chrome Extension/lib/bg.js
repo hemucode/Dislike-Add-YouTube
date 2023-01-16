@@ -1,430 +1,295 @@
-(() => { 
-var __webpack_exports__ = {};
-const apiUrl = "https://returnyoutubedislikeapi.com";
-const voteDisabledIconName = "hold.png";
-const defaultIconName = "128.png";
-let api;
-
-let extConfig = {
-  disableVoteSubmission: false,
-  coloredThumbs: false,
-  coloredBar: false,
-  colorTheme: "classic", 
-  numberDisplayFormat: "compactShort",
-  numberDisplayReformatLikes: false, 
-};
-
-if (isChrome()) api = chrome;
-else if (isFirefox()) api = browser;
-
-initExtConfig();
-
-api.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (request.message === "get_auth_token") {
-    chrome.identity.getAuthToken({ interactive: true }, function (token) {
-      console.log(token);
-      chrome.identity.getProfileUserInfo(function (userInfo) {
-        console.log(JSON.stringify(userInfo));
-      });
+((() => {
+    var c = {};
+    const d = 'https://returnyoutubedislikeapi.com', e = 'hold.png', f = '128.png';
+    let g, h = {
+            'disableVoteSubmission': ![],
+            'coloredThumbs': ![],
+            'coloredBar': ![],
+            'colorTheme': 'classic',
+            'numberDisplayFormat': 'compactShort',
+            'numberDisplayReformatLikes': ![]
+        };
+    if (I())
+        g = chrome;
+    else {
+        if (J())
+            g = browser;
+    }
+    z(), g['runtime']['onMessage']['addListener']((K, L, M) => {
+        function U(c, d) {
+            return b(c - 109, d);
+        }
+        if (K['message'] === 'get_auth_token')
+            chrome['identity']['getAuthToken']({ 'interactive': !![] }, function (N) {
+                console['log'](N), chrome['identity']['getProfileUserInfo'](function (O) {
+                    console['log'](JSON['stringify'](O));
+                });
+            });
+        else {
+            if (K['message'] === 'log_off') {
+            } else {
+                if (K['message'] == 'set_state') {
+                    let N = '';
+                    return fetch(d + '/votes?videoId=' + K['videoId'] + '&likeCount=' + (K['likeCount'] || ''), {
+                        'method': U(109, 109),
+                        'headers': { 'Accept': 'application/json' }
+                    })['then'](O => O['json']())['then'](O => {
+                        M(O);
+                    })['catch'](), !![];
+                } else {
+                    if (K['message'] == 'send_links') {
+                        l = l['concat'](K['videoIds']['filter'](O => !k['has'](O)));
+                        if (l['length'] >= 20) {
+                            fetch(d + '/votes', {
+                                'method': 'POST',
+                                'headers': { 'Content-Type': 'application/json' },
+                                'body': JSON['stringify'](l)
+                            });
+                            for (const O of l) {
+                                k['add'](O);
+                            }
+                            l = [];
+                        }
+                    } else {
+                        if (K['message'] == 'register')
+                            return j(), !![];
+                        else {
+                            if (K['message'] == 'send_vote')
+                                return i(K['videoId'], K['vote']), !![];
+                        }
+                    }
+                }
+            }
+        }
+    }), g['runtime']['onInstalled']['addListener'](K => {
+        if (K['reason'] === 'browser_update' || K['reason'] === 'chrome_update' || K['reason'] === 'update')
+            return;
     });
-  } else if (request.message === "log_off") {
-  } else if (request.message == "set_state") {
-    let token = "";
-    fetch(
-      `${apiUrl}/votes?videoId=${request.videoId}&likeCount=${
-        request.likeCount || ""
-      }`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((response) => {
-        sendResponse(response);
-      })
-      .catch();
-    return true;
-  } else if (request.message == "send_links") {
-    toSend = toSend.concat(request.videoIds.filter((x) => !sentIds.has(x)));
-    if (toSend.length >= 20) {
-      fetch(`${apiUrl}/votes`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(toSend),
-      });
-      for (const toSendUrl of toSend) {
-        sentIds.add(toSendUrl);
-      }
-      toSend = [];
+    async function i(K, L) {
+        g['storage']['sync']['get'](null, async M => {
+            (!M['userId'] || !M['registrationConfirmed']) && await j();
+            let N = await fetch(d + '/interact/vote', {
+                'method': 'POST',
+                'headers': { 'Content-Type': 'application/json' },
+                'body': JSON['stringify']({
+                    'userId': M['userId'],
+                    'videoId': K,
+                    'value': L
+                })
+            });
+            if (N['status'] == 401) {
+                await j(), await i(K, L);
+                return;
+            }
+            const O = await N['json'](), P = await n(O);
+            if (!P['solution']) {
+                await i(K, L);
+                return;
+            }
+            await fetch(d + '/interact/confirmVote', {
+                'method': 'POST',
+                'headers': { 'Content-Type': 'application/json' },
+                'body': JSON['stringify']({
+                    ...P,
+                    'userId': M['userId'],
+                    'videoId': K
+                })
+            });
+        });
     }
-  } else if (request.message == "register") {
-    register();
-    return true;
-  } else if (request.message == "send_vote") {
-    sendVote(request.videoId, request.vote);
-    return true;
-  }
-});
-
-api.runtime.onInstalled.addListener((details) => {
-  if (
-    details.reason === "browser_update" ||
-    details.reason === "chrome_update" ||
-    details.reason === "update"
-  ) {
-    return;
-
-  }
-});
-
-
-
-async function sendVote(videoId, vote) {
-  api.storage.sync.get(null, async (storageResult) => {
-    if (!storageResult.userId || !storageResult.registrationConfirmed) {
-      await register();
+    async function j() {
+        const K = o();
+        g['storage']['sync']['set']({ 'userId': K });
+        const L = await fetch(d + '/puzzle/registration?userId=' + K, {
+                'method': 'GET',
+                'headers': { 'Accept': 'application/json' }
+            })['then'](O => O['json']()), M = await n(L);
+        if (!M['solution']) {
+            await j();
+            return;
+        }
+        const N = await fetch(d + '/puzzle/registration?userId=' + K, {
+            'method': 'POST',
+            'headers': { 'Content-Type': 'application/json' },
+            'body': JSON['stringify'](M)
+        })['then'](O => O['json']());
+        if (N === !![])
+            return g['storage']['sync']['set']({ 'registrationConfirmed': !![] });
     }
-    let voteResponse = await fetch(`${apiUrl}/interact/vote`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        userId: storageResult.userId,
-        videoId,
-        value: vote,
-      }),
+    g['storage']['sync']['get'](null, async K => {
+        (!K || !K['userId'] || !K['registrationConfirmed']) && await j();
     });
-
-    if (voteResponse.status == 401) {
-      await register();
-      await sendVote(videoId, vote);
-      return;
+    const k = new Set();
+    let l = [];
+    function m(K, L) {
+        let M = 0, N = 0;
+        for (let O = 0; O < K['length']; O++) {
+            N = K[O];
+            if (N === 0)
+                M += 8;
+            else {
+                let P = 1;
+                N >>> 4 === 0 && (P += 4, N <<= 4);
+                N >>> 6 === 0 && (P += 2, N <<= 2);
+                M += P - (N >>> 7);
+                break;
+            }
+            if (M >= L)
+                break;
+        }
+        return M;
     }
-    const voteResponseJson = await voteResponse.json();
-    const solvedPuzzle = await solvePuzzle(voteResponseJson);
-    if (!solvedPuzzle.solution) {
-      await sendVote(videoId, vote);
-      return;
+    async function n(K) {
+        let L = Uint8Array['from'](atob(K['challenge']), Q => Q['charCodeAt'](0)), M = new ArrayBuffer(20), N = new Uint8Array(M), O = new Uint32Array(M), P = Math['pow'](2, K['difficulty']) * 3;
+        for (let Q = 4; Q < 20; Q++) {
+            N[Q] = L[Q - 4];
+        }
+        for (let R = 0; R < P; R++) {
+            O[0] = R;
+            let S = await crypto['subtle']['digest']('SHA-512', M), T = new Uint8Array(S);
+            if (m(T) >= K['difficulty'])
+                return { 'solution': btoa(String['fromCharCode']['apply'](null, N['slice'](0, 4))) };
+        }
+        return {};
     }
-
-    await fetch(`${apiUrl}/interact/confirmVote`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ...solvedPuzzle,
-        userId: storageResult.userId,
-        videoId,
-      }),
-    });
-  });
-}
-
-async function register() {
-  const userId = generateUserID();
-  api.storage.sync.set({ userId });
-  const registrationResponse = await fetch(
-    `${apiUrl}/puzzle/registration?userId=${userId}`,
-    {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-      },
+    function o(K = 36) {
+        const L = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let M = '';
+        if (crypto && crypto['getRandomValues']) {
+            const N = new Uint32Array(K);
+            crypto['getRandomValues'](N);
+            for (let O = 0; O < K; O++) {
+                M += L[N[O] % L['length']];
+            }
+            return M;
+        } else {
+            for (let P = 0; P < K; P++) {
+                M += L[Math['floor'](Math['random']() * L['length'])];
+            }
+            return M;
+        }
     }
-  ).then((response) => response.json());
-  const solvedPuzzle = await solvePuzzle(registrationResponse);
-  if (!solvedPuzzle.solution) {
-    await register();
-    return;
-  }
-  const result = await fetch(`${apiUrl}/puzzle/registration?userId=${userId}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(solvedPuzzle),
-  }).then((response) => response.json());
-  if (result === true) {
-    return api.storage.sync.set({ registrationConfirmed: true });
-  }
-}
-
-api.storage.sync.get(null, async (res) => {
-  if (!res || !res.userId || !res.registrationConfirmed) {
-    await register();
-  }
-});
-
-const sentIds = new Set();
-let toSend = [];
-
-function countLeadingZeroes(uInt8View, limit) {
-  let zeroes = 0;
-  let value = 0;
-  for (let i = 0; i < uInt8View.length; i++) {
-    value = uInt8View[i];
-    if (value === 0) {
-      zeroes += 8;
-    } else {
-      let count = 1;
-      if (value >>> 4 === 0) {
-        count += 4;
-        value <<= 4;
-      }
-      if (value >>> 6 === 0) {
-        count += 2;
-        value <<= 2;
-      }
-      zeroes += count - (value >>> 7);
-      break;
+    function p(K, L) {
+        K[V(268, 266)] !== undefined && q(K['disableVoteSubmission']['newValue']);
+        K['coloredThumbs'] !== undefined && v(K['coloredThumbs']['newValue']);
+        K['coloredBar'] !== undefined && w(K['coloredBar']['newValue']);
+        K['colorTheme'] !== undefined && x(K['colorTheme']['newValue']);
+        K['numberDisplayFormat'] !== undefined && r(K['numberDisplayFormat']['newValue']);
+        function V(c, d) {
+            return b(c - 267, d);
+        }
+        K['numberDisplayReformatLikes'] !== undefined && y(K['numberDisplayReformatLikes']['newValue']), K['showTooltipPercentage'] !== undefined && s(K['showTooltipPercentage']['newValue']), K['numberDisplayReformatLikes'] !== undefined && y(K['numberDisplayReformatLikes']['newValue']);
     }
-    if (zeroes >= limit) {
-      break;
+    function q(K) {
+        h['disableVoteSubmission'] = K, K === !![] ? u(e) : u(f);
     }
-  }
-  return zeroes;
-}
-
-async function solvePuzzle(puzzle) {
-  let challenge = Uint8Array.from(atob(puzzle.challenge), (c) =>
-    c.charCodeAt(0)
-  );
-  let buffer = new ArrayBuffer(20);
-  let uInt8View = new Uint8Array(buffer);
-  let uInt32View = new Uint32Array(buffer);
-  let maxCount = Math.pow(2, puzzle.difficulty) * 3;
-  for (let i = 4; i < 20; i++) {
-    uInt8View[i] = challenge[i - 4];
-  }
-
-  for (let i = 0; i < maxCount; i++) {
-    uInt32View[0] = i;
-    let hash = await crypto.subtle.digest("SHA-512", buffer);
-    let hashUint8 = new Uint8Array(hash);
-    if (countLeadingZeroes(hashUint8) >= puzzle.difficulty) {
-      return {
-        solution: btoa(String.fromCharCode.apply(null, uInt8View.slice(0, 4))),
-      };
+    function r(K) {
+        h['numberDisplayFormat'] = K;
     }
-  }
-  return {};
-}
-
-function generateUserID(length = 36) {
-  const charset =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  let result = "";
-  if (crypto && crypto.getRandomValues) {
-    const values = new Uint32Array(length);
-    crypto.getRandomValues(values);
-    for (let i = 0; i < length; i++) {
-      result += charset[values[i] % charset.length];
+    function s(K) {
+        h['showTooltipPercentage'] = K;
     }
-    return result;
-  } else {
-    for (let i = 0; i < length; i++) {
-      result += charset[Math.floor(Math.random() * charset.length)];
+    function t(K) {
+        !K && (K = 'dash_like'), h['tooltipPercentageMode'] = K;
     }
-    return result;
-  }
-}
-
-function storageChangeHandler(changes, area) {
-  if (changes.disableVoteSubmission !== undefined) {
-    handleDisableVoteSubmissionChangeEvent(
-      changes.disableVoteSubmission.newValue
-    );
-  }
-  if (changes.coloredThumbs !== undefined) {
-    handleColoredThumbsChangeEvent(changes.coloredThumbs.newValue);
-  }
-  if (changes.coloredBar !== undefined) {
-    handleColoredBarChangeEvent(changes.coloredBar.newValue);
-  }
-  if (changes.colorTheme !== undefined) {
-    handleColorThemeChangeEvent(changes.colorTheme.newValue);
-  }
-  if (changes.numberDisplayFormat !== undefined) {
-    handleNumberDisplayFormatChangeEvent(changes.numberDisplayFormat.newValue);
-  }
-  if (changes.numberDisplayReformatLikes !== undefined) {
-    handleNumberDisplayReformatLikesChangeEvent(
-      changes.numberDisplayReformatLikes.newValue
-    );
-  }
-  if (changes.showTooltipPercentage !== undefined) {
-    handleShowTooltipPercentageChangeEvent(
-      changes.showTooltipPercentage.newValue
-    );
-  }
-  if (changes.numberDisplayReformatLikes !== undefined) {
-    handleNumberDisplayReformatLikesChangeEvent(
-      changes.numberDisplayReformatLikes.newValue
-    );
-  }
-}
-
-function handleDisableVoteSubmissionChangeEvent(value) {
-  extConfig.disableVoteSubmission = value;
-  if (value === true) {
-    changeIcon(voteDisabledIconName);
-  } else {
-    changeIcon(defaultIconName);
-  }
-}
-
-function handleNumberDisplayFormatChangeEvent(value) {
-  extConfig.numberDisplayFormat = value;
-}
-
-function handleShowTooltipPercentageChangeEvent(value) {
-  extConfig.showTooltipPercentage = value;
-}
-
-function handleTooltipPercentageModeChangeEvent(value) {
-  if (!value) {
-    value = "dash_like";
-  }
-  extConfig.tooltipPercentageMode = value;
-}
-
-function changeIcon(iconName) {
-  if (api.action !== undefined)
-    api.action.setIcon({ path: "/data/icons/" + iconName });
-  else if (api.browserAction !== undefined)
-    api.browserAction.setIcon({ path: "/data/icons/" + iconName });
-  else console.log("changing icon is not supported");
-}
-
-function handleColoredThumbsChangeEvent(value) {
-  extConfig.coloredThumbs = value;
-}
-
-function handleColoredBarChangeEvent(value) {
-  extConfig.coloredBar = value;
-}
-
-function handleColorThemeChangeEvent(value) {
-  if (!value) {
-    value = "classic";
-  }
-  extConfig.colorTheme = value;
-}
-
-function handleNumberDisplayReformatLikesChangeEvent(value) {
-  extConfig.numberDisplayReformatLikes = value;
-}
-
-api.storage.onChanged.addListener(storageChangeHandler);
-
-function initExtConfig() {
-  initializeDisableVoteSubmission();
-  initializeColoredThumbs();
-  initializeColoredBar();
-  initializeColorTheme();
-  initializeNumberDisplayFormat();
-  initializeNumberDisplayReformatLikes();
-  initializeTooltipPercentage();
-  initializeTooltipPercentageMode();
-}
-
-function initializeDisableVoteSubmission() {
-  api.storage.sync.get(["disableVoteSubmission"], (res) => {
-    if (res.disableVoteSubmission === undefined) {
-      api.storage.sync.set({ disableVoteSubmission: false });
-    } else {
-      extConfig.disableVoteSubmission = res.disableVoteSubmission;
-      if (res.disableVoteSubmission) changeIcon(voteDisabledIconName);
+    function u(K) {
+        if (g['action'] !== undefined)
+            g['action']['setIcon']({ 'path': '/data/icons/' + K });
+        else {
+            if (g['browserAction'] !== undefined)
+                g['browserAction']['setIcon']({ 'path': '/data/icons/' + K });
+            else
+                console['log']('changing icon is not supported');
+        }
     }
-  });
-}
-
-function initializeColoredThumbs() {
-  api.storage.sync.get(["coloredThumbs"], (res) => {
-    if (res.coloredThumbs === undefined) {
-      api.storage.sync.set({ coloredThumbs: false });
-    } else {
-      extConfig.coloredThumbs = res.coloredThumbs;
+    function v(K) {
+        h['coloredThumbs'] = K;
     }
-  });
-}
-
-function initializeColoredBar() {
-  api.storage.sync.get(["coloredBar"], (res) => {
-    if (res.coloredBar === undefined) {
-      api.storage.sync.set({ coloredBar: false });
-    } else {
-      extConfig.coloredBar = res.coloredBar;
+    function w(K) {
+        h['coloredBar'] = K;
     }
-  });
-}
-
-function initializeColorTheme() {
-  api.storage.sync.get(["colorTheme"], (res) => {
-    if (res.colorTheme === undefined) {
-      api.storage.sync.set({ colorTheme: false });
-    } else {
-      extConfig.colorTheme = res.colorTheme;
+    function x(K) {
+        !K && (K = 'classic'), h['colorTheme'] = K;
     }
-  });
-}
-
-function initializeNumberDisplayFormat() {
-  api.storage.sync.get(["numberDisplayFormat"], (res) => {
-    if (res.numberDisplayFormat === undefined) {
-      api.storage.sync.set({ numberDisplayFormat: "compactShort" });
-    } else {
-      extConfig.numberDisplayFormat = res.numberDisplayFormat;
+    function y(K) {
+        h['numberDisplayReformatLikes'] = K;
     }
-  });
-}
-
-function initializeTooltipPercentage() {
-  api.storage.sync.get(["showTooltipPercentage"], (res) => {
-    if (res.showTooltipPercentage === undefined) {
-      api.storage.sync.set({ showTooltipPercentage: false });
-    } else {
-      extConfig.showTooltipPercentage = res.showTooltipPercentage;
+    g['storage']['onChanged']['addListener'](p);
+    function z() {
+        A(), B(), C(), D(), E(), H(), F(), G();
     }
-  });
-}
-
-function initializeTooltipPercentageMode() {
-  api.storage.sync.get(["tooltipPercentageMode"], (res) => {
-    if (res.tooltipPercentageMode === undefined) {
-      api.storage.sync.set({ tooltipPercentageMode: "dash_like" });
-    } else {
-      extConfig.tooltipPercentageMode = res.tooltipPercentageMode;
+    function A() {
+        g['storage']['sync']['get'](['disableVoteSubmission'], K => {
+            if (K['disableVoteSubmission'] === undefined)
+                g['storage']['sync']['set']({ 'disableVoteSubmission': ![] });
+            else {
+                h['disableVoteSubmission'] = K['disableVoteSubmission'];
+                if (K['disableVoteSubmission'])
+                    u(e);
+            }
+        });
     }
-  });
-}
-
-function initializeNumberDisplayReformatLikes() {
-  api.storage.sync.get(["numberDisplayReformatLikes"], (res) => {
-    if (res.numberDisplayReformatLikes === undefined) {
-      api.storage.sync.set({ numberDisplayReformatLikes: false });
-    } else {
-      extConfig.numberDisplayReformatLikes = res.numberDisplayReformatLikes;
+    function B() {
+        g['storage']['sync']['get'](['coloredThumbs'], K => {
+            K['coloredThumbs'] === undefined ? g['storage']['sync']['set']({ 'coloredThumbs': ![] }) : h['coloredThumbs'] = K['coloredThumbs'];
+        });
     }
-  });
+    function C() {
+        g['storage']['sync']['get'](['coloredBar'], K => {
+            K['coloredBar'] === undefined ? g['storage']['sync']['set']({ 'coloredBar': ![] }) : h['coloredBar'] = K['coloredBar'];
+        });
+    }
+    function D() {
+        g['storage']['sync']['get'](['colorTheme'], K => {
+            K['colorTheme'] === undefined ? g['storage']['sync']['set']({ 'colorTheme': ![] }) : h['colorTheme'] = K['colorTheme'];
+        });
+    }
+    function E() {
+        g['storage']['sync']['get'](['numberDisplayFormat'], K => {
+            function W(c, d) {
+                return b(c - -722, d);
+            }
+            K['numberDisplayFormat'] === undefined ? g['storage']['sync'][W(-720, -719)]({ 'numberDisplayFormat': 'compactShort' }) : h['numberDisplayFormat'] = K['numberDisplayFormat'];
+        });
+    }
+    function F() {
+        g['storage']['sync']['get'](['showTooltipPercentage'], K => {
+            K['showTooltipPercentage'] === undefined ? g['storage']['sync']['set']({ 'showTooltipPercentage': ![] }) : h['showTooltipPercentage'] = K['showTooltipPercentage'];
+        });
+    }
+    function G() {
+        g['storage']['sync']['get'](['tooltipPercentageMode'], K => {
+            K['tooltipPercentageMode'] === undefined ? g['storage']['sync']['set']({ 'tooltipPercentageMode': 'dash_like' }) : h['tooltipPercentageMode'] = K['tooltipPercentageMode'];
+        });
+    }
+    function H() {
+        g['storage']['sync']['get'](['numberDisplayReformatLikes'], K => {
+            K['numberDisplayReformatLikes'] === undefined ? g['storage']['sync']['set']({ 'numberDisplayReformatLikes': ![] }) : h['numberDisplayReformatLikes'] = K['numberDisplayReformatLikes'];
+        });
+    }
+    function I() {
+        return typeof chrome !== 'undefined' && typeof chrome['runtime'] !== 'undefined';
+    }
+    function J() {
+        return typeof browser !== 'undefined' && typeof browser['runtime'] !== 'undefined';
+    }
+})());
+function b(c, d) {
+    const e = a();
+    return b = function (f, g) {
+        f = f - 0;
+        let h = e[f];
+        return h;
+    }, b(c, d);
 }
-
-function isChrome() {
-  return typeof chrome !== "undefined" && typeof chrome.runtime !== "undefined";
+function a() {
+    const X = [
+        'GET',
+        'disableVoteSubmission',
+        'set'
+    ];
+    a = function () {
+        return X;
+    };
+    return a();
 }
-
-function isFirefox() {
-  return (
-    typeof browser !== "undefined" && typeof browser.runtime !== "undefined"
-  );
-}
-
-})()
-;

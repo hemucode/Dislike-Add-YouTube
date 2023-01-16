@@ -1,967 +1,502 @@
-(() => { 
-"use strict";
-var __webpack_exports__ = {};
-
-;
-
-
-function numberFormat(numberState) {
-  return getNumberFormatter(extConfig.numberDisplayFormat).format(
-    numberState
-  );
+function b(c, d) {
+    const e = a();
+    return b = function (f, g) {
+        f = f - 0;
+        let h = e[f];
+        return h;
+    }, b(c, d);
 }
-
-function getNumberFormatter(optionSelect) {
-  let userLocales;
-  if (document.documentElement.lang) {
-    userLocales = document.documentElement.lang;
-  } else if (navigator.language) {
-    userLocales = navigator.language;
-  } else {
-    try {
-      userLocales = new URL(
-        Array.from(document.querySelectorAll("head > link[rel='search']"))
-          ?.find((n) => n?.getAttribute("href")?.includes("?locale="))
-          ?.getAttribute("href")
-      )?.searchParams?.get("locale");
-    } catch {
-      utils_cLog(
-        "Cannot find browser locale. Use en as default for number formatting."
-      );
-      userLocales = "en";
+function a() {
+    const av = [
+        'top',
+        'menu-container',
+        'getElementById',
+        'style',
+        'likes',
+        'colorTheme'
+    ];
+    a = function () {
+        return av;
+    };
+    return a();
+}
+((() => {
+    'use strict';
+    var c = {};
+    ;
+    function d(ad) {
+        return e(t['numberDisplayFormat'])['format'](ad);
     }
-  }
-
-  let formatterNotation;
-  let formatterCompactDisplay;
-  switch (optionSelect) {
-    case "compactLong":
-      formatterNotation = "compact";
-      formatterCompactDisplay = "long";
-      break;
-    case "standard":
-      formatterNotation = "standard";
-      formatterCompactDisplay = "short";
-      break;
-    case "compactShort":
-    default:
-      formatterNotation = "compact";
-      formatterCompactDisplay = "short";
-  }
-
-  const formatter = Intl.NumberFormat(userLocales, {
-    notation: formatterNotation,
-    compactDisplay: formatterCompactDisplay,
-  });
-  return formatter;
-}
-
-function localize(localeString) {
-  return chrome.i18n.getMessage(localeString);
-}
-
-function getBrowser() {
-  if (typeof chrome !== "undefined" && typeof chrome.runtime !== "undefined") {
-    return chrome;
-  } else if (
-    typeof browser !== "undefined" &&
-    typeof browser.runtime !== "undefined"
-  ) {
-    return browser;
-  } else {
-    console.log("browser is not supported");
-    return false;
-  }
-}
-
-function getVideoId(url) {
-  const urlObject = new URL(url);
-  const pathname = urlObject.pathname;
-  if (pathname.startsWith("/clip")) {
-    return document.querySelector("meta[itemprop='videoId']").content;
-  } else {
-    if (pathname.startsWith("/shorts")) {
-      return pathname.slice(8);
-    }
-    return urlObject.searchParams.get("v");
-  }
-}
-
-function isInViewport(element) {
-  const rect = element.getBoundingClientRect();
-  const height = innerHeight || document.documentElement.clientHeight;
-  const width = innerWidth || document.documentElement.clientWidth;
-  return (
-    !(rect.top == 0 && rect.left == 0 && rect.bottom == 0 && rect.right == 0) &&
-    rect.top >= 0 &&
-    rect.left >= 0 &&
-    rect.bottom <= height &&
-    rect.right <= width
-  );
-}
-
-function isVideoLoaded() {
-  const videoId = getVideoId(window.location.href);
-  return (
-    document.querySelector(`ytd-watch-flexy[video-id='${videoId}']`) !== null ||
-    document.querySelector('#player[loading="false"]:not([hidden])') !== null
-  );
-}
-
-function utils_cLog(message, writer) {
-  message = `[return youtube dislike]: ${message}`;
-  if (writer) {
-    writer(message);
-  } else {
-    console.log(message);
-  }
-}
-
-function getColorFromTheme(voteIsLike) {
-  let colorString;
-  switch (extConfig.colorTheme) {
-    case "accessible":
-      if (voteIsLike === true) {
-        colorString = "dodgerblue";
-      } else {
-        colorString = "gold";
-      }
-      break;
-    case "neon":
-      if (voteIsLike === true) {
-        colorString = "aqua";
-      } else {
-        colorString = "magenta";
-      }
-      break;
-    case "classic":
-    default:
-      if (voteIsLike === true) {
-        colorString = "lime";
-      } else {
-        colorString = "red";
-      }
-  }
-  return colorString;
-}
-
-
-
-;
-
-
-
-
-function createRateBarInternal (likes, dislikes) {
-  if (!isLikesDisabled()) {
-    let rateBar = document.getElementById("ryd-bar-container");
-
-    const widthPx =
-      getLikeButton().clientWidth +
-      getDislikeButton().clientWidth +
-      (isRoundedDesign() ? 0 : 8);
-
-    const widthPercent =
-      likes + dislikes > 0 ? (likes / (likes + dislikes)) * 100 : 50;
-
-    var likePercentage = parseFloat(widthPercent.toFixed(1));
-    const dislikePercentage = (100 - likePercentage).toLocaleString();
-    likePercentage = likePercentage.toLocaleString();
-
-    if (extConfig.showTooltipPercentage) {
-      var tooltipInnerHTML;
-      switch (extConfig.tooltipPercentageMode) {
-        case "dash_dislike":
-          tooltipInnerHTML = `${likes.toLocaleString()}&nbsp;/&nbsp;${dislikes.toLocaleString()}&nbsp;&nbsp;-&nbsp;&nbsp;${dislikePercentage}%`;
-          break;
-        case "both":
-          tooltipInnerHTML = `${likePercentage}%&nbsp;/&nbsp;${dislikePercentage}%`;
-          break;
-        case "only_like":
-          tooltipInnerHTML = `${likePercentage}%`;
-          break;
-        case "only_dislike":
-          tooltipInnerHTML = `${dislikePercentage}%`;
-          break;
-        default: 
-          tooltipInnerHTML = `${likes.toLocaleString()}&nbsp;/&nbsp;${dislikes.toLocaleString()}&nbsp;&nbsp;-&nbsp;&nbsp;${likePercentage}%`;
-      }
-    } else {
-      tooltipInnerHTML = `${likes.toLocaleString()}&nbsp;/&nbsp;${dislikes.toLocaleString()}`;
-    }
-
-    if (!isShorts()) {
-      if (!rateBar && !isMobile()) {
-        let colorLikeStyle = "";
-        let colorDislikeStyle = "";
-        if (extConfig.coloredBar) {
-          colorLikeStyle = "; background-color: " + getColorFromTheme(true);
-          colorDislikeStyle = "; background-color: " + getColorFromTheme(false);
+    function e(ad) {
+        let ae;
+        if (document['documentElement']['lang'])
+            ae = document['documentElement']['lang'];
+        else {
+            if (navigator['language'])
+                ae = navigator['language'];
+            else
+                try {
+                    ae = new URL(Array['from'](document['querySelectorAll']("head > link[rel='search']"))?.['find'](ai => ai?.['getAttribute']('href')?.['includes']('?locale='))?.['getAttribute']('href'))?.['searchParams']?.['get']('locale');
+                } catch {
+                    k('Cannot find browser locale. Use en as default for number formatting.'), ae = 'en';
+                }
         }
-        (
-          document.getElementById(
-            isNewDesign() ? "top-level-buttons-computed" : "menu-container"
-          ) || document.querySelector("ytm-slim-video-action-bar-renderer")
-        ).insertAdjacentHTML(
-          "beforeend",
-          `
-              <div class="ryd-tooltip ryd-tooltip-${isNewDesign() ? "new" : "old"}-design" style="display:none;width: ${widthPx}px">
-              <div class="ryd-tooltip-bar-container">
-                <div
-                    id="ryd-bar-container"
-                    style="width: 100%; height: 2px;${colorDislikeStyle}"
-                    >
-                    <div
-                      id="ryd-bar"
-                      style="width: ${widthPercent}%; height: 100%${colorLikeStyle}"
-                      ></div>
-                </div>
-              </div>
-              <tp-yt-paper-tooltip position="top" id="ryd-dislike-tooltip" class="style-scope ytd-sentiment-bar-renderer" role="tooltip" tabindex="-1">
-                <!--css-build:shady-->${tooltipInnerHTML}
-              </tp-yt-paper-tooltip>
-              </div>
-            `
-        );
-
-        if (isNewDesign()) {
-          let descriptionAndActionsElement = document.getElementById("top-row");
-          descriptionAndActionsElement.style.borderBottom =
-            "1px solid var(--yt-spec-10-percent-layer)";
-          descriptionAndActionsElement.style.paddingBottom = "10px";
-
-          document.getElementById("actions-inner").style.width = "revert";
-          if (isRoundedDesign()) {
-            document.getElementById("actions").style.flexDirection =
-              "row-reverse";
-          }
+        let af, ag;
+        switch (ad) {
+        case 'compactLong':
+            af = 'compact', ag = 'long';
+            break;
+        case 'standard':
+            af = 'standard', ag = 'short';
+            break;
+        case 'compactShort':
+        default:
+            af = 'compact', ag = 'short';
         }
-      } else {
-        document.getElementById("ryd-bar-container").style.width =
-          widthPx + "px";
-        document.getElementById("ryd-bar").style.width = widthPercent + "%";
-        document.querySelector("#ryd-dislike-tooltip > #tooltip").innerHTML =
-          tooltipInnerHTML;
-        if (extConfig.coloredBar) {
-          document.getElementById("ryd-bar-container").style.backgroundColor =
-            getColorFromTheme(false);
-          document.getElementById("ryd-bar").style.backgroundColor =
-            getColorFromTheme(true);
+        const ah = Intl['NumberFormat'](ae, {
+            'notation': af,
+            'compactDisplay': ag
+        });
+        return ah;
+    }
+    function f(ad) {
+        return chrome['i18n']['getMessage'](ad);
+    }
+    function g() {
+        if (typeof chrome !== 'undefined' && typeof chrome['runtime'] !== 'undefined')
+            return chrome;
+        else
+            return typeof browser !== 'undefined' && typeof browser['runtime'] !== 'undefined' ? browser : (console['log']('browser is not supported'), ![]);
+    }
+    function h(ad) {
+        const ae = new URL(ad), af = ae['pathname'];
+        if (af['startsWith']('/clip'))
+            return document['querySelector']("meta[itemprop='videoId']")['content'];
+        else {
+            if (af['startsWith']('/shorts'))
+                return af['slice'](8);
+            return ae['searchParams']['get']('v');
         }
-      }
     }
-  } else {
-    utils_cLog("removing bar");
-    let ratebar = document.getElementById("ryd-bar-container");
-    if (ratebar) {
-      ratebar.parentNode.removeChild(ratebar);
+    function i(ad) {
+        const ae = ad['getBoundingClientRect'](), af = innerHeight || document['documentElement']['clientHeight'];
+        function ap(c, d) {
+            return b(c - -545, d);
+        }
+        const ag = innerWidth || document['documentElement']['clientWidth'];
+        return !(ae[ap(-545, -546)] == 0 && ae['left'] == 0 && ae['bottom'] == 0 && ae['right'] == 0) && ae['top'] >= 0 && ae['left'] >= 0 && ae['bottom'] <= af && ae['right'] <= ag;
     }
-  }
-}
-
-async function createRateBar(likes, dislikes) {
-  createRateBarInternal(likes, dislikes);
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  createRateBarInternal(likes, dislikes);
-}
-
-
-
-;
-
-
-function createStarRating(rating, isMobile) {
-  let starRating = document.createElement("label");
-
-  let starSlider = document.createElement("input");
-  starSlider.setAttribute("class", "rating");
-  starSlider.setAttribute("max", "5");
-  starSlider.setAttribute("readonly", "");
-  starSlider.setAttribute(
-    "style",
-    `--fill:rgb(255, 215, 0);--value:${rating.toString()};};background-color: transparent;`
-  );
-  starSlider.setAttribute("type", "range");
-
-  starRating.appendChild(starSlider);
-
-  let YTLikeButton;
-
-  if (isMobile) {
-    YTLikeButton = document.querySelector(
-      "#app > div.page-container > ytm-watch > ytm-single-column-watch-next-results-renderer > ytm-slim-video-metadata-section-renderer > ytm-slim-video-action-bar-renderer > div > ytm-slim-metadata-toggle-button-renderer:nth-child(1)"
-    );
-  } else {
-    YTLikeButton = document.querySelector(
-      "#top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(1)"
-    );
-  }
-
-  YTLikeButton.insertAdjacentElement("afterend", starRating);
-
-  try {
-    let YTBar = document.querySelector("#ryd-bar-container");
-    YTBar.setAttribute("style", "width: 190%; height: 2px;");
-  } catch (err) {
-    cLog("RateBar Not Present");
-  }
-
-  let style = `<style>
-
-.rating {
-    --dir: right;
-    --fill: gold;
-    --fillbg: rgba(100, 100, 100, 0.15);
-    --star: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.25l-6.188 3.75 1.641-7.031-5.438-4.734 7.172-0.609 2.813-6.609 2.813 6.609 7.172 0.609-5.438 4.734 1.641 7.031z"/></svg>');
-    --stars: 5;
-    --starSize: 2.8rem;
-    --symbol: var(--star);
-    --value: 1;
-    --w: calc(var(--stars) * var(--starSize));
-    --x: calc(100% * (var(--value) / var(--stars)));
-    block-size: var(--starSize);
-    inline-size: var(--w);
-    position: relative;
-    touch-action: manipulation;
-    -webkit-appearance: none;
-}
-
-[dir="rtl"] .rating {
-    --dir: left;
-}
-
-.rating::-moz-range-track {
-    background: linear-gradient(to var(--dir), var(--fill) 0 var(--x), var(--fillbg) 0 var(--x));
-    block-size: 100%;
-    mask: repeat left center/var(--starSize) var(--symbol);
-}
-
-.rating::-webkit-slider-runnable-track {
-    background: linear-gradient(to var(--dir), var(--fill) 0 var(--x), var(--fillbg) 0 var(--x));
-    block-size: 100%;
-    mask: repeat left center/var(--starSize) var(--symbol);
-    -webkit-mask: repeat left center/var(--starSize) var(--symbol);
-}
-
-.rating::-moz-range-thumb {
-    height: var(--starSize);
-    opacity: 0;
-    width: var(--starSize);
-}
-
-.rating::-webkit-slider-thumb {
-    height: var(--starSize);
-    opacity: 0;
-    width: var(--starSize);
-    -webkit-appearance: none;
-}
-
-.rating,
-.rating-label {
-    display: block;
-    font-family: ui-sans-serif, system-ui, sans-serif;
-}
-
-.rating-label {
-    margin-block-end: 1rem;
-}
-
-</style>`;
-
-  document.head.insertAdjacentHTML("beforeend", style);
-}
-
-
-
-;
-
-
-const apiUrl = "https://returnyoutubedislikeapi.com";
-const LIKED_STATE = "LIKED_STATE";
-const DISLIKED_STATE = "DISLIKED_STATE";
-const NEUTRAL_STATE = "NEUTRAL_STATE";
-
-let extConfig = {
-  disableVoteSubmission: false,
-  coloredThumbs: false,
-  coloredBar: false,
-  colorTheme: "classic",
-  numberDisplayFormat: "compactShort",
-  showTooltipPercentage: false,
-  tooltipPercentageMode: "dash_like",
-  numberDisplayReformatLikes: false,
-};
-
-let storedData = {
-  likes: 0,
-  dislikes: 0,
-  previousState: NEUTRAL_STATE,
-};
-
-function isMobile() {
-  return location.hostname == "m.youtube.com";
-}
-
-function isShorts() {
-  return location.pathname.startsWith("/shorts");
-}
-
-function isNewDesign() {
-  return document.getElementById("comment-teaser") !== null;
-}
-
-function isRoundedDesign() {
-  return document.getElementById("segmented-like-button") !== null;
-}
-
-let mutationObserver = new Object();
-
-if (isShorts() && mutationObserver.exists !== true) {
-  utils_cLog("initializing mutation observer");
-  mutationObserver.options = {
-    childList: false,
-    attributes: true,
-    subtree: false,
-  };
-  mutationObserver.exists = true;
-  mutationObserver.observer = new MutationObserver(function (
-    mutationList,
-    observer
-  ) {
-    mutationList.forEach((mutation) => {
-      if (
-        mutation.type === "attributes" &&
-        mutation.target.nodeName === "TP-YT-PAPER-BUTTON" &&
-        mutation.target.id === "button"
-      ) {
-        if (mutation.target.getAttribute("aria-pressed") === "true") {
-          mutation.target.style.color =
-            mutation.target.parentElement.parentElement.id === "like-button"
-              ? getColorFromTheme(true)
-              : getColorFromTheme(false);
+    function j() {
+        const ad = h(window['location']['href']);
+        return document['querySelector']("ytd-watch-flexy[video-id='" + ad + "']") !== null || document['querySelector']('#player[loading="false"]:not([hidden])') !== null;
+    }
+    function k(ad, ae) {
+        ad = '[return youtube dislike]: ' + ad, ae ? ae(ad) : console['log'](ad);
+    }
+    function l(ad) {
+        let ae;
+        switch (t['colorTheme']) {
+        case 'accessible':
+            ad === !![] ? ae = 'dodgerblue' : ae = 'gold';
+            break;
+        case 'neon':
+            ad === !![] ? ae = 'aqua' : ae = 'magenta';
+            break;
+        case 'classic':
+        default:
+            ad === !![] ? ae = 'lime' : ae = 'red';
+        }
+        return ae;
+    }
+    ;
+    function m(ad, ae) {
+        function aq(c, d) {
+            return b(d - 520, c);
+        }
+        function ar(c, d) {
+            return b(d - 845, c);
+        }
+        function as(c, d) {
+            return b(d - -699, c);
+        }
+        if (!A()) {
+            let ah = document['getElementById']('ryd-bar-container');
+            const ai = V()['clientWidth'] + X()['clientWidth'] + (y() ? 0 : 8), aj = ad + ae > 0 ? ad / (ad + ae) * 100 : 50;
+            var af = parseFloat(aj['toFixed'](1));
+            const ak = (100 - af)['toLocaleString']();
+            af = af['toLocaleString']();
+            if (t['showTooltipPercentage']) {
+                var ag;
+                switch (t['tooltipPercentageMode']) {
+                case 'dash_dislike':
+                    ag = ad['toLocaleString']() + '&nbsp;/&nbsp;' + ae['toLocaleString']() + '&nbsp;&nbsp;-&nbsp;&nbsp;' + ak + '%';
+                    break;
+                case 'both':
+                    ag = af + '%&nbsp;/&nbsp;' + ak + '%';
+                    break;
+                case 'only_like':
+                    ag = af + '%';
+                    break;
+                case 'only_dislike':
+                    ag = ak + '%';
+                    break;
+                default:
+                    ag = ad['toLocaleString']() + '&nbsp;/&nbsp;' + ae['toLocaleString']() + '&nbsp;&nbsp;-&nbsp;&nbsp;' + af + '%';
+                }
+            } else
+                ag = ad['toLocaleString']() + '&nbsp;/&nbsp;' + ae['toLocaleString']();
+            if (!w()) {
+                if (!ah && !v()) {
+                    let al = '', am = '';
+                    t['coloredBar'] && (al = '; background-color: ' + l(!![]), am = '; background-color: ' + l(![]));
+                    (document['getElementById'](x() ? 'top-level-buttons-computed' : aq(519, 521)) || document['querySelector']('ytm-slim-video-action-bar-renderer'))['insertAdjacentHTML']('beforeend', '\n              <div class="ryd-tooltip ryd-tooltip-' + (x() ? 'new' : 'old') + '-design" style="display:none;width: ' + ai + 'px">\n              <div class="ryd-tooltip-bar-container">\n                <div\n                    id="ryd-bar-container"\n                    style="width: 100%; height: 2px;' + am + '"\n                    >\n                    <div\n                      id="ryd-bar"\n                      style="width: ' + aj + '%; height: 100%' + al + '"\n                      ></div>\n                </div>\n              </div>\n              <tp-yt-paper-tooltip position="top" id="ryd-dislike-tooltip" class="style-scope ytd-sentiment-bar-renderer" role="tooltip" tabindex="-1">\n                <!--css-build:shady-->' + ag + '\n              </tp-yt-paper-tooltip>\n              </div>\n            ');
+                    if (x()) {
+                        let an = document[aq(522, 522)]('top-row');
+                        an['style']['borderBottom'] = '1px solid var(--yt-spec-10-percent-layer)', an['style']['paddingBottom'] = '10px', document['getElementById']('actions-inner')['style']['width'] = 'revert', y() && (document['getElementById']('actions')[ar(849, 848)]['flexDirection'] = 'row-reverse');
+                    }
+                } else
+                    document['getElementById']('ryd-bar-container')['style']['width'] = ai + 'px', document['getElementById']('ryd-bar')['style']['width'] = aj + '%', document['querySelector']('#ryd-dislike-tooltip > #tooltip')['innerHTML'] = ag, t['coloredBar'] && (document['getElementById']('ryd-bar-container')['style']['backgroundColor'] = l(![]), document['getElementById']('ryd-bar')['style']['backgroundColor'] = l(!![]));
+            }
         } else {
-          mutation.target.style.color = "unset";
+            k('removing bar');
+            let ao = document['getElementById']('ryd-bar-container');
+            ao && ao['parentNode']['removeChild'](ao);
         }
-        return;
-      }
-      utils_cLog(
-        "unexpected mutation observer event: " + mutation.target + mutation.type
-      );
-    });
-  });
-}
-
-function isLikesDisabled() {
-  if (isMobile()) {
-    return /^\D*$/.test(
-      getButtons().children[0].querySelector(".button-renderer-text").innerText
-    );
-  }
-  return /^\D*$/.test(getButtons().children[0].innerText);
-}
-
-function isVideoLiked() {
-  if (isMobile()) {
-    return (
-      getLikeButton().querySelector("button").getAttribute("aria-label") ==
-      "true"
-    );
-  }
-  return getLikeButton().classList.contains("style-default-active");
-}
-
-function isVideoDisliked() {
-  if (isMobile()) {
-    return (
-      getDislikeButton().querySelector("button").getAttribute("aria-label") ==
-      "true"
-    );
-  }
-  return getDislikeButton().classList.contains("style-default-active");
-}
-
-function getState(storedData) {
-  if (isVideoLiked()) {
-    return { current: LIKED_STATE, previous: storedData.previousState };
-  }
-  if (isVideoDisliked()) {
-    return { current: DISLIKED_STATE, previous: storedData.previousState };
-  }
-  return { current: NEUTRAL_STATE, previous: storedData.previousState };
-}
-
-function setLikes(likesCount) {
-  utils_cLog(`SET likes ${likesCount}`)
-  getLikeTextContainer().innerText = likesCount;
-}
-
-function setDislikes(dislikesCount) {
-  utils_cLog(`SET dislikes ${dislikesCount}`)
-  getDislikeTextContainer()?.removeAttribute("is-empty");
-  getDislikeTextContainer()?.removeAttribute('is-empty');
-  if (!isLikesDisabled()) {
-    if (isMobile()) {
-      getButtons().children[1].querySelector(
-        ".button-renderer-text"
-      ).innerText = dislikesCount;
-      return;
     }
-    getDislikeTextContainer().innerText = dislikesCount;
-  } else {
-    utils_cLog("likes count disabled by creator");
-    if (isMobile()) {
-      getButtons().children[1].querySelector(
-        ".button-renderer-text"
-      ).innerText = localize("TextLikesDisabled");
-      return;
+    async function n(ad, ae) {
+        m(ad, ae), await new Promise(af => setTimeout(af, 1000)), m(ad, ae);
     }
-    getDislikeTextContainer().innerText = localize("TextLikesDisabled");
-  }
-}
-
-function getLikeCountFromButton() {
-  try {
-    if (isShorts()) {
-      return false;
-    }
-
-    let likeButton = getLikeButton()
-    .querySelector("yt-formatted-string#text") ??
-    getLikeButton().querySelector("button");
-
-    let likesStr = likeButton.getAttribute("aria-label")
-    .replace(/\D/g, "");
-    return likesStr.length > 0 ? parseInt(likesStr) : false;
-  } catch {
-    return false;
-  }
-}
-
-function processResponse(response, storedData) {
-  const formattedDislike = numberFormat(response.dislikes);
-  setDislikes(formattedDislike);
-  if (extConfig.numberDisplayReformatLikes === true) {
-    const nativeLikes = getLikeCountFromButton();
-    if (nativeLikes !== false) {
-      setLikes(numberFormat(nativeLikes));
-    }
-  }
-  storedData.dislikes = parseInt(response.dislikes);
-  storedData.likes = getLikeCountFromButton() || parseInt(response.likes);
-  createRateBar(storedData.likes, storedData.dislikes);
-  if (extConfig.coloredThumbs === true) {
-    if (isShorts()) {
-      let shortLikeButton = getLikeButton().querySelector(
-        "tp-yt-paper-button#button"
-      );
-      let shortDislikeButton = getDislikeButton().querySelector(
-        "tp-yt-paper-button#button"
-      );
-      if (shortLikeButton.getAttribute("aria-pressed") === "true") {
-        shortLikeButton.style.color = getColorFromTheme(true);
-      }
-      if (shortDislikeButton.getAttribute("aria-pressed") === "true") {
-        shortDislikeButton.style.color = getColorFromTheme(false);
-      }
-      mutationObserver.observer.observe(
-        shortLikeButton,
-        mutationObserver.options
-      );
-      mutationObserver.observer.observe(
-        shortDislikeButton,
-        mutationObserver.options
-      );
-    } else {
-      getLikeButton().style.color = getColorFromTheme(true);
-      getDislikeButton().style.color = getColorFromTheme(false);
-    }
-  }
-}
-
-function displayError(error) {
-  getDislikeTextContainer().innerText = localize(
-    "textTempUnavailable"
-  );
-}
-
-async function setState(storedData) {
-  storedData.previousState = isVideoDisliked()
-    ? DISLIKED_STATE
-    : isVideoLiked()
-    ? LIKED_STATE
-    : NEUTRAL_STATE;
-  let statsSet = false;
-
-  let videoId = getVideoId(window.location.href);
-  let likeCount = getLikeCountFromButton() || null;
-
-  let response = await fetch(
-    `${apiUrl}/votes?videoId=${videoId}&likeCount=${likeCount || ""}`,
-    {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-      },
-    }
-  )
-    .then((response) => {
-      if (!response.ok) displayError(response.error);
-      return response;
-    })
-    .then((response) => response.json())
-    .catch(displayError);
-  utils_cLog("response from api:");
-  utils_cLog(JSON.stringify(response));
-  if (response !== undefined && !("traceId" in response) && !statsSet) {
-    processResponse(response, storedData);
-  }
-}
-
-function setInitialState() {
-  setState(storedData);
-}
-
-function initExtConfig() {
-  initializeDisableVoteSubmission();
-  initializeColoredThumbs();
-  initializeColoredBar();
-  initializeColorTheme();
-  initializeNumberDisplayFormat();
-  initializeTooltipPercentage();
-  initializeTooltipPercentageMode();
-  initializeNumberDisplayReformatLikes();
-}
-
-function initializeDisableVoteSubmission() {
-  getBrowser().storage.sync.get(["disableVoteSubmission"], (res) => {
-    if (res.disableVoteSubmission === undefined) {
-      getBrowser().storage.sync.set({ disableVoteSubmission: false });
-    } else {
-      extConfig.disableVoteSubmission = res.disableVoteSubmission;
-    }
-  });
-}
-
-function initializeColoredThumbs() {
-  getBrowser().storage.sync.get(["coloredThumbs"], (res) => {
-    if (res.coloredThumbs === undefined) {
-      getBrowser().storage.sync.set({ coloredThumbs: false });
-    } else {
-      extConfig.coloredThumbs = res.coloredThumbs;
-    }
-  });
-}
-
-function initializeColoredBar() {
-  getBrowser().storage.sync.get(["coloredBar"], (res) => {
-    if (res.coloredBar === undefined) {
-      getBrowser().storage.sync.set({ coloredBar: false });
-    } else {
-      extConfig.coloredBar = res.coloredBar;
-    }
-  });
-}
-
-function initializeColorTheme() {
-  getBrowser().storage.sync.get(["colorTheme"], (res) => {
-    if (res.colorTheme === undefined) {
-      getBrowser().storage.sync.set({ colorTheme: false });
-    } else {
-      extConfig.colorTheme = res.colorTheme;
-    }
-  });
-}
-
-function initializeNumberDisplayFormat() {
-  getBrowser().storage.sync.get(["numberDisplayFormat"], (res) => {
-    if (res.numberDisplayFormat === undefined) {
-      getBrowser().storage.sync.set({ numberDisplayFormat: "compactShort" });
-    } else {
-      extConfig.numberDisplayFormat = res.numberDisplayFormat;
-    }
-  });
-}
-
-function initializeTooltipPercentage() {
-  getBrowser().storage.sync.get(["showTooltipPercentage"], (res) => {
-    if (res.showTooltipPercentage === undefined) {
-      getBrowser().storage.sync.set({ showTooltipPercentage: false });
-    } else {
-      extConfig.showTooltipPercentage = res.showTooltipPercentage;
-    }
-  });
-}
-
-function initializeTooltipPercentageMode() {
-  getBrowser().storage.sync.get(["tooltipPercentageMode"], (res) => {
-    if (res.tooltipPercentageMode === undefined) {
-      getBrowser().storage.sync.set({ tooltipPercentageMode: "dash_like" });
-    } else {
-      extConfig.tooltipPercentageMode = res.tooltipPercentageMode;
-    }
-  });
-}
-
-function initializeNumberDisplayReformatLikes() {
-  getBrowser().storage.sync.get(["numberDisplayReformatLikes"], (res) => {
-    if (res.numberDisplayReformatLikes === undefined) {
-      getBrowser().storage.sync.set({ numberDisplayReformatLikes: false });
-    } else {
-      extConfig.numberDisplayReformatLikes = res.numberDisplayReformatLikes;
-    }
-  });
-}
-
-
-
-;
-
-
-
-function getButtons() {
-  if (isShorts()) {
-    let elements = document.querySelectorAll(
-      isMobile()
-        ? "ytm-like-button-renderer"
-        : "#like-button > ytd-like-button-renderer"
-    );
-    for (let element of elements) {
-      if (isInViewport(element)) {
-        return element;
-      }
-    }
-  }
-  if (isMobile()) {
-    return document.querySelector(".slim-video-action-bar-actions");
-  }
-  if (document.getElementById("menu-container")?.offsetParent === null) {
-    return document.querySelector("ytd-menu-renderer.ytd-watch-metadata > div");
-  } else {
-    return document
-      .getElementById("menu-container")
-      ?.querySelector("#top-level-buttons-computed");
-  }
-}
-
-function getLikeButton() {
-  return getButtons().children[0].tagName ===
-    "YTD-SEGMENTED-LIKE-DISLIKE-BUTTON-RENDERER"
-    ? getButtons().children[0].children[0]
-    : getButtons().children[0];
-}
-
-function getLikeTextContainer() {
-  return (
-    getLikeButton().querySelector("#text") ??
-    getLikeButton().getElementsByTagName("yt-formatted-string")[0] ??
-    getLikeButton().querySelector("span[role='text']")
-  );
-}
-
-function getDislikeButton() {
-  return getButtons().children[0].tagName ===
-    "YTD-SEGMENTED-LIKE-DISLIKE-BUTTON-RENDERER"
-    ? getButtons().children[0].children[1]
-    : getButtons().children[1];
-}
-
-function getDislikeTextContainer() {
-  let result =
-    getDislikeButton().querySelector("#text") ??
-    getDislikeButton().getElementsByTagName("yt-formatted-string")[0] ??
-    getDislikeButton().querySelector("span[role='text']");
-  if (result == null) {
-    let textSpan = document.createElement("span");
-    textSpan.id = "text";
-    getDislikeButton().querySelector("button").appendChild(textSpan);
-    getDislikeButton().querySelector("button").style.width = "auto";
-    result = getDislikeButton().querySelector("#text");
-  }
-  return result;
-}
-
-function checkForSignInButton() {
-  if (
-    document.querySelector(
-      "a[href^='https://accounts.google.com/ServiceLogin']"
-    )
-  ) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
-
-
-;
-
-
-
-
-
-function sendVote(vote) {
-  if (extConfig.disableVoteSubmission !== true) {
-    getBrowser().runtime.sendMessage({
-      message: "send_vote",
-      vote: vote,
-      videoId: getVideoId(window.location.href),
-    });
-  }
-}
-
-function likeClicked() {
-  if (checkForSignInButton() === false) {
-    if (storedData.previousState === DISLIKED_STATE) {
-      sendVote(1);
-      if (storedData.dislikes > 0) storedData.dislikes--;
-      storedData.likes++;
-      createRateBar(storedData.likes, storedData.dislikes);
-      setDislikes(numberFormat(storedData.dislikes));
-      storedData.previousState = LIKED_STATE;
-    } else if (storedData.previousState === NEUTRAL_STATE) {
-      sendVote(1);
-      storedData.likes++;
-      createRateBar(storedData.likes, storedData.dislikes);
-      storedData.previousState = LIKED_STATE;
-    } else if ((storedData.previousState = LIKED_STATE)) {
-      sendVote(0);
-      if (storedData.likes > 0) storedData.likes--;
-      createRateBar(storedData.likes, storedData.dislikes);
-      storedData.previousState = NEUTRAL_STATE;
-    }
-    if (extConfig.numberDisplayReformatLikes === true) {
-      const nativeLikes = getLikeCountFromButton();
-      if (nativeLikes !== false) {
-        setLikes(numberFormat(nativeLikes));
-      }
-    }
-  }
-}
-
-function dislikeClicked() {
-  if (checkForSignInButton() == false) {
-    if (storedData.previousState === NEUTRAL_STATE) {
-      sendVote(-1);
-      storedData.dislikes++;
-      setDislikes(numberFormat(storedData.dislikes));
-      createRateBar(storedData.likes, storedData.dislikes);
-      storedData.previousState = DISLIKED_STATE;
-    } else if (storedData.previousState === DISLIKED_STATE) {
-      sendVote(0);
-      if (storedData.dislikes > 0) storedData.dislikes--;
-      setDislikes(numberFormat(storedData.dislikes));
-      createRateBar(storedData.likes, storedData.dislikes);
-      storedData.previousState = NEUTRAL_STATE;
-    } else if (storedData.previousState === LIKED_STATE) {
-      sendVote(-1);
-      if (storedData.likes > 0) storedData.likes--;
-      storedData.dislikes++;
-      setDislikes(numberFormat(storedData.dislikes));
-      createRateBar(storedData.likes, storedData.dislikes);
-      storedData.previousState = DISLIKED_STATE;
-      if (extConfig.numberDisplayReformatLikes === true) {
-        const nativeLikes = getLikeCountFromButton();
-        if (nativeLikes !== false) {
-          setLikes(numberFormat(nativeLikes));
+    ;
+    function o(ad, ae) {
+        let af = document['createElement']('label'), ag = document['createElement']('input');
+        ag['setAttribute']('class', 'rating'), ag['setAttribute']('max', '5'), ag['setAttribute']('readonly', ''), ag['setAttribute']('style', '--fill:rgb(255, 215, 0);--value:' + ad['toString']() + ';};background-color: transparent;'), ag['setAttribute']('type', 'range'), af['appendChild'](ag);
+        let ah;
+        ae ? ah = document['querySelector']('#app > div.page-container > ytm-watch > ytm-single-column-watch-next-results-renderer > ytm-slim-video-metadata-section-renderer > ytm-slim-video-action-bar-renderer > div > ytm-slim-metadata-toggle-button-renderer:nth-child(1)') : ah = document['querySelector']('#top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(1)');
+        ah['insertAdjacentElement']('afterend', af);
+        try {
+            let aj = document['querySelector']('#ryd-bar-container');
+            aj['setAttribute']('style', 'width: 190%; height: 2px;');
+        } catch (ak) {
+            cLog('RateBar Not Present');
         }
-      }
+        let ai = `<style>\n\n.rating {\n    --dir: right;\n    --fill: gold;\n    --fillbg: rgba(100, 100, 100, 0.15);\n    --star: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 17.25l-6.188 3.75 1.641-7.031-5.438-4.734 7.172-0.609 2.813-6.609 2.813 6.609 7.172 0.609-5.438 4.734 1.641 7.031z"/></svg>');\n    --stars: 5;\n    --starSize: 2.8rem;\n    --symbol: var(--star);\n    --value: 1;\n    --w: calc(var(--stars) * var(--starSize));\n    --x: calc(100% * (var(--value) / var(--stars)));\n    block-size: var(--starSize);\n    inline-size: var(--w);\n    position: relative;\n    touch-action: manipulation;\n    -webkit-appearance: none;\n}\n\n[dir="rtl"] .rating {\n    --dir: left;\n}\n\n.rating::-moz-range-track {\n    background: linear-gradient(to var(--dir), var(--fill) 0 var(--x), var(--fillbg) 0 var(--x));\n    block-size: 100%;\n    mask: repeat left center/var(--starSize) var(--symbol);\n}\n\n.rating::-webkit-slider-runnable-track {\n    background: linear-gradient(to var(--dir), var(--fill) 0 var(--x), var(--fillbg) 0 var(--x));\n    block-size: 100%;\n    mask: repeat left center/var(--starSize) var(--symbol);\n    -webkit-mask: repeat left center/var(--starSize) var(--symbol);\n}\n\n.rating::-moz-range-thumb {\n    height: var(--starSize);\n    opacity: 0;\n    width: var(--starSize);\n}\n\n.rating::-webkit-slider-thumb {\n    height: var(--starSize);\n    opacity: 0;\n    width: var(--starSize);\n    -webkit-appearance: none;\n}\n\n.rating,\n.rating-label {\n    display: block;\n    font-family: ui-sans-serif, system-ui, sans-serif;\n}\n\n.rating-label {\n    margin-block-end: 1rem;\n}\n\n</style>`;
+        document['head']['insertAdjacentHTML']('beforeend', ai);
     }
-  }
-}
-
-function addLikeDislikeEventListener() {
-  if (!window.returnDislikeButtonlistenersSet) {
-    getLikeButton().addEventListener("click", likeClicked);
-    getDislikeButton().addEventListener("click", dislikeClicked);
-    getLikeButton().addEventListener("touchstart", likeClicked);
-    getLikeButton().addEventListener("touchstart", dislikeClicked);
-    window.returnDislikeButtonlistenersSet = true;
-  }
-}
-
-function storageChangeHandler(changes, area) {
-  if (changes.disableVoteSubmission !== undefined) {
-    handleDisableVoteSubmissionChangeEvent(
-      changes.disableVoteSubmission.newValue
-    );
-  }
-  if (changes.coloredThumbs !== undefined) {
-    handleColoredThumbsChangeEvent(changes.coloredThumbs.newValue);
-  }
-  if (changes.coloredBar !== undefined) {
-    handleColoredBarChangeEvent(changes.coloredBar.newValue);
-  }
-  if (changes.colorTheme !== undefined) {
-    handleColorThemeChangeEvent(changes.colorTheme.newValue);
-  }
-  if (changes.numberDisplayFormat !== undefined) {
-    handleNumberDisplayFormatChangeEvent(changes.numberDisplayFormat.newValue);
-  }
-  if (changes.numberDisplayReformatLikes !== undefined) {
-    handleNumberDisplayReformatLikesChangeEvent(
-      changes.numberDisplayReformatLikes.newValue
-    );
-  }
-}
-
-function handleDisableVoteSubmissionChangeEvent(value) {
-  extConfig.disableVoteSubmission = value;
-}
-
-function handleColoredThumbsChangeEvent(value) {
-  extConfig.coloredThumbs = value;
-}
-
-function handleColoredBarChangeEvent(value) {
-  extConfig.coloredBar = value;
-}
-
-function handleColorThemeChangeEvent(value) {
-  if (!value) value = "classic";
-  extConfig.colorTheme = value;
-}
-
-function handleNumberDisplayFormatChangeEvent(value) {
-  extConfig.numberDisplayFormat = value;
-}
-
-function handleNumberDisplayReformatLikesChangeEvent(value) {
-  extConfig.numberDisplayReformatLikes = value;
-}
-
-
-
-;
-
-
-
-
-initExtConfig();
-
-let jsInitChecktimer = null;
-
-function setEventListeners(evt) {
-  function checkForJS_Finish() {
-    if (isShorts() || (getButtons()?.offsetParent && isVideoLoaded())) {
-      addLikeDislikeEventListener();
-      setInitialState();
-      getBrowser().storage.onChanged.addListener(storageChangeHandler);
-      clearInterval(jsInitChecktimer);
-      jsInitChecktimer = null;
+    ;
+    const p = 'https://returnyoutubedislikeapi.com', q = 'LIKED_STATE', r = 'DISLIKED_STATE', s = 'NEUTRAL_STATE';
+    let t = {
+            'disableVoteSubmission': ![],
+            'coloredThumbs': ![],
+            'coloredBar': ![],
+            'colorTheme': 'classic',
+            'numberDisplayFormat': 'compactShort',
+            'showTooltipPercentage': ![],
+            'tooltipPercentageMode': 'dash_like',
+            'numberDisplayReformatLikes': ![]
+        }, u = {
+            'likes': 0,
+            'dislikes': 0,
+            'previousState': s
+        };
+    function v() {
+        return location['hostname'] == 'm.youtube.com';
     }
-  }
-
-  jsInitChecktimer = setInterval(checkForJS_Finish, 111);
-}
-
-setEventListeners();
-
-document.addEventListener("yt-navigate-finish", function (event) {
-  if (jsInitChecktimer !== null) clearInterval(jsInitChecktimer);
-  window.returnDislikeButtonlistenersSet = false;
-  setEventListeners();
-});
-
-/******/ })()
-;
+    function w() {
+        return location['pathname']['startsWith']('/shorts');
+    }
+    function x() {
+        return document['getElementById']('comment-teaser') !== null;
+    }
+    function y() {
+        return document['getElementById']('segmented-like-button') !== null;
+    }
+    let z = new Object();
+    w() && z['exists'] !== !![] && (k('initializing mutation observer'), z['options'] = {
+        'childList': ![],
+        'attributes': !![],
+        'subtree': ![]
+    }, z['exists'] = !![], z['observer'] = new MutationObserver(function (ad, ae) {
+        ad['forEach'](af => {
+            if (af['type'] === 'attributes' && af['target']['nodeName'] === 'TP-YT-PAPER-BUTTON' && af['target']['id'] === 'button') {
+                af['target']['getAttribute']('aria-pressed') === 'true' ? af['target']['style']['color'] = af['target']['parentElement']['parentElement']['id'] === 'like-button' ? l(!![]) : l(![]) : af['target']['style']['color'] = 'unset';
+                return;
+            }
+            k('unexpected mutation observer event: ' + af['target'] + af['type']);
+        });
+    }));
+    function A() {
+        if (v())
+            return /^\D*$/['test'](U()['children'][0]['querySelector']('.button-renderer-text')['innerText']);
+        return /^\D*$/['test'](U()['children'][0]['innerText']);
+    }
+    function B() {
+        if (v())
+            return V()['querySelector']('button')['getAttribute']('aria-label') == 'true';
+        return V()['classList']['contains']('style-default-active');
+    }
+    function C() {
+        if (v())
+            return X()['querySelector']('button')['getAttribute']('aria-label') == 'true';
+        return X()['classList']['contains']('style-default-active');
+    }
+    function D(ad) {
+        if (B())
+            return {
+                'current': q,
+                'previous': ad['previousState']
+            };
+        if (C())
+            return {
+                'current': r,
+                'previous': ad['previousState']
+            };
+        return {
+            'current': s,
+            'previous': ad['previousState']
+        };
+    }
+    function E(ad) {
+        k('SET likes ' + ad), W()['innerText'] = ad;
+    }
+    function F(ad) {
+        k('SET dislikes ' + ad), Y()?.['removeAttribute']('is-empty'), Y()?.['removeAttribute']('is-empty');
+        if (!A()) {
+            if (v()) {
+                U()['children'][1]['querySelector']('.button-renderer-text')['innerText'] = ad;
+                return;
+            }
+            Y()['innerText'] = ad;
+        } else {
+            k('likes count disabled by creator');
+            if (v()) {
+                U()['children'][1]['querySelector']('.button-renderer-text')['innerText'] = f('TextLikesDisabled');
+                return;
+            }
+            Y()['innerText'] = f('TextLikesDisabled');
+        }
+    }
+    function G() {
+        try {
+            if (w())
+                return ![];
+            let ad = V()['querySelector']('yt-formatted-string#text') ?? V()['querySelector']('button'), ae = ad['getAttribute']('aria-label')['replace'](/\D/g, '');
+            return ae['length'] > 0 ? parseInt(ae) : ![];
+        } catch {
+            return ![];
+        }
+    }
+    function H(ad, ae) {
+        const af = d(ad['dislikes']);
+        F(af);
+        if (t['numberDisplayReformatLikes'] === !![]) {
+            const ag = G();
+            ag !== ![] && E(d(ag));
+        }
+        function at(c, d) {
+            return b(c - -73, d);
+        }
+        ae['dislikes'] = parseInt(ad['dislikes']), ae[at(-69, -66)] = G() || parseInt(ad['likes']), n(ae['likes'], ae['dislikes']);
+        if (t['coloredThumbs'] === !![]) {
+            if (w()) {
+                let ah = V()['querySelector']('tp-yt-paper-button#button'), ai = X()['querySelector']('tp-yt-paper-button#button');
+                ah['getAttribute']('aria-pressed') === 'true' && (ah['style']['color'] = l(!![])), ai['getAttribute']('aria-pressed') === 'true' && (ai['style']['color'] = l(![])), z['observer']['observe'](ah, z['options']), z['observer']['observe'](ai, z['options']);
+            } else
+                V()['style']['color'] = l(!![]), X()['style']['color'] = l(![]);
+        }
+    }
+    function I(ad) {
+        Y()['innerText'] = f('textTempUnavailable');
+    }
+    async function J(ad) {
+        ad['previousState'] = C() ? r : B() ? q : s;
+        let ae = ![], af = h(window['location']['href']), ag = G() || null, ah = await fetch(p + '/votes?videoId=' + af + '&likeCount=' + (ag || ''), {
+                'method': 'GET',
+                'headers': { 'Accept': 'application/json' }
+            })['then'](ai => {
+                if (!ai['ok'])
+                    I(ai['error']);
+                return ai;
+            })['then'](ai => ai['json']())['catch'](I);
+        k('response from api:'), k(JSON['stringify'](ah)), ah !== undefined && !('traceId' in ah) && !ae && H(ah, ad);
+    }
+    function K() {
+        J(u);
+    }
+    function L() {
+        M(), N(), O(), P(), Q(), R(), S(), T();
+    }
+    function M() {
+        g()['storage']['sync']['get'](['disableVoteSubmission'], ad => {
+            ad['disableVoteSubmission'] === undefined ? g()['storage']['sync']['set']({ 'disableVoteSubmission': ![] }) : t['disableVoteSubmission'] = ad['disableVoteSubmission'];
+        });
+    }
+    function N() {
+        g()['storage']['sync']['get'](['coloredThumbs'], ad => {
+            ad['coloredThumbs'] === undefined ? g()['storage']['sync']['set']({ 'coloredThumbs': ![] }) : t['coloredThumbs'] = ad['coloredThumbs'];
+        });
+    }
+    function O() {
+        g()['storage']['sync']['get'](['coloredBar'], ad => {
+            ad['coloredBar'] === undefined ? g()['storage']['sync']['set']({ 'coloredBar': ![] }) : t['coloredBar'] = ad['coloredBar'];
+        });
+    }
+    function P() {
+        g()['storage']['sync']['get'](['colorTheme'], ad => {
+            function au(c, d) {
+                return b(d - -822, c);
+            }
+            ad['colorTheme'] === undefined ? g()['storage']['sync']['set']({ 'colorTheme': ![] }) : t['colorTheme'] = ad[au(-818, -817)];
+        });
+    }
+    function Q() {
+        g()['storage']['sync']['get'](['numberDisplayFormat'], ad => {
+            ad['numberDisplayFormat'] === undefined ? g()['storage']['sync']['set']({ 'numberDisplayFormat': 'compactShort' }) : t['numberDisplayFormat'] = ad['numberDisplayFormat'];
+        });
+    }
+    function R() {
+        g()['storage']['sync']['get'](['showTooltipPercentage'], ad => {
+            ad['showTooltipPercentage'] === undefined ? g()['storage']['sync']['set']({ 'showTooltipPercentage': ![] }) : t['showTooltipPercentage'] = ad['showTooltipPercentage'];
+        });
+    }
+    function S() {
+        g()['storage']['sync']['get'](['tooltipPercentageMode'], ad => {
+            ad['tooltipPercentageMode'] === undefined ? g()['storage']['sync']['set']({ 'tooltipPercentageMode': 'dash_like' }) : t['tooltipPercentageMode'] = ad['tooltipPercentageMode'];
+        });
+    }
+    function T() {
+        g()['storage']['sync']['get'](['numberDisplayReformatLikes'], ad => {
+            ad['numberDisplayReformatLikes'] === undefined ? g()['storage']['sync']['set']({ 'numberDisplayReformatLikes': ![] }) : t['numberDisplayReformatLikes'] = ad['numberDisplayReformatLikes'];
+        });
+    }
+    ;
+    function U() {
+        if (w()) {
+            let ad = document['querySelectorAll'](v() ? 'ytm-like-button-renderer' : '#like-button > ytd-like-button-renderer');
+            for (let ae of ad) {
+                if (i(ae))
+                    return ae;
+            }
+        }
+        if (v())
+            return document['querySelector']('.slim-video-action-bar-actions');
+        return document['getElementById']('menu-container')?.['offsetParent'] === null ? document['querySelector']('ytd-menu-renderer.ytd-watch-metadata > div') : document['getElementById']('menu-container')?.['querySelector']('#top-level-buttons-computed');
+    }
+    function V() {
+        return U()['children'][0]['tagName'] === 'YTD-SEGMENTED-LIKE-DISLIKE-BUTTON-RENDERER' ? U()['children'][0]['children'][0] : U()['children'][0];
+    }
+    function W() {
+        return V()['querySelector']('#text') ?? V()['getElementsByTagName']('yt-formatted-string')[0] ?? V()['querySelector']("span[role='text']");
+    }
+    function X() {
+        return U()['children'][0]['tagName'] === 'YTD-SEGMENTED-LIKE-DISLIKE-BUTTON-RENDERER' ? U()['children'][0]['children'][1] : U()['children'][1];
+    }
+    function Y() {
+        let ad = X()['querySelector']('#text') ?? X()['getElementsByTagName']('yt-formatted-string')[0] ?? X()['querySelector']("span[role='text']");
+        if (ad == null) {
+            let ae = document['createElement']('span');
+            ae['id'] = 'text', X()['querySelector']('button')['appendChild'](ae), X()['querySelector']('button')['style']['width'] = 'auto', ad = X()['querySelector']('#text');
+        }
+        return ad;
+    }
+    function Z() {
+        return document['querySelector']("a[href^='https://accounts.google.com/ServiceLogin']") ? !![] : ![];
+    }
+    ;
+    function a0(ad) {
+        t['disableVoteSubmission'] !== !![] && g()['runtime']['sendMessage']({
+            'message': 'send_vote',
+            'vote': ad,
+            'videoId': h(window['location']['href'])
+        });
+    }
+    function a1() {
+        if (Z() === ![]) {
+            if (u['previousState'] === r) {
+                a0(1);
+                if (u['dislikes'] > 0)
+                    u['dislikes']--;
+                u['likes']++, n(u['likes'], u['dislikes']), F(d(u['dislikes'])), u['previousState'] = q;
+            } else {
+                if (u['previousState'] === s)
+                    a0(1), u['likes']++, n(u['likes'], u['dislikes']), u['previousState'] = q;
+                else {
+                    if (u['previousState'] = q) {
+                        a0(0);
+                        if (u['likes'] > 0)
+                            u['likes']--;
+                        n(u['likes'], u['dislikes']), u['previousState'] = s;
+                    }
+                }
+            }
+            if (t['numberDisplayReformatLikes'] === !![]) {
+                const ad = G();
+                ad !== ![] && E(d(ad));
+            }
+        }
+    }
+    function a2() {
+        if (Z() == ![]) {
+            if (u['previousState'] === s)
+                a0(-1), u['dislikes']++, F(d(u['dislikes'])), n(u['likes'], u['dislikes']), u['previousState'] = r;
+            else {
+                if (u['previousState'] === r) {
+                    a0(0);
+                    if (u['dislikes'] > 0)
+                        u['dislikes']--;
+                    F(d(u['dislikes'])), n(u['likes'], u['dislikes']), u['previousState'] = s;
+                } else {
+                    if (u['previousState'] === q) {
+                        a0(-1);
+                        if (u['likes'] > 0)
+                            u['likes']--;
+                        u['dislikes']++, F(d(u['dislikes'])), n(u['likes'], u['dislikes']), u['previousState'] = r;
+                        if (t['numberDisplayReformatLikes'] === !![]) {
+                            const ad = G();
+                            ad !== ![] && E(d(ad));
+                        }
+                    }
+                }
+            }
+        }
+    }
+    function a3() {
+        !window['returnDislikeButtonlistenersSet'] && (V()['addEventListener']('click', a1), X()['addEventListener']('click', a2), V()['addEventListener']('touchstart', a1), V()['addEventListener']('touchstart', a2), window['returnDislikeButtonlistenersSet'] = !![]);
+    }
+    function a4(ad, ae) {
+        ad['disableVoteSubmission'] !== undefined && a5(ad['disableVoteSubmission']['newValue']), ad['coloredThumbs'] !== undefined && a6(ad['coloredThumbs']['newValue']), ad['coloredBar'] !== undefined && a7(ad['coloredBar']['newValue']), ad['colorTheme'] !== undefined && a8(ad['colorTheme']['newValue']), ad['numberDisplayFormat'] !== undefined && a9(ad['numberDisplayFormat']['newValue']), ad['numberDisplayReformatLikes'] !== undefined && aa(ad['numberDisplayReformatLikes']['newValue']);
+    }
+    function a5(ad) {
+        t['disableVoteSubmission'] = ad;
+    }
+    function a6(ad) {
+        t['coloredThumbs'] = ad;
+    }
+    function a7(ad) {
+        t['coloredBar'] = ad;
+    }
+    function a8(ad) {
+        if (!ad)
+            ad = 'classic';
+        t['colorTheme'] = ad;
+    }
+    function a9(ad) {
+        t['numberDisplayFormat'] = ad;
+    }
+    function aa(ad) {
+        t['numberDisplayReformatLikes'] = ad;
+    }
+    ;
+    L();
+    let ab = null;
+    function ac(ad) {
+        function ae() {
+            (w() || U()?.['offsetParent'] && j()) && (a3(), K(), g()['storage']['onChanged']['addListener'](a4), clearInterval(ab), ab = null);
+        }
+        ab = setInterval(ae, 111);
+    }
+    ac(), document['addEventListener']('yt-navigate-finish', function (ad) {
+        if (ab !== null)
+            clearInterval(ab);
+        window['returnDislikeButtonlistenersSet'] = ![], ac();
+    });
+})());
