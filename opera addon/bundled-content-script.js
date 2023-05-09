@@ -109,7 +109,7 @@ function isVideoLoaded() {
 }
 
 function utils_cLog(message, writer) {
-  message = `[return youtube dislike]: ${message}`;
+  message = `[Dislikes in YouTube™]: ${message}`;
   if (writer) {
     writer(message);
   } else {
@@ -454,7 +454,7 @@ if (isShorts() && mutationObserver.exists !== true) {
 function isLikesDisabled() {
   if (isMobile()) {
     return /^\D*$/.test(
-      getButtons().children[0].querySelector(".button-renderer-text").innerText
+      getButtons().children[0].querySelector(".yt-core-attributed-string").innerText
     );
   }
   return /^\D*$/.test(getButtons().children[0].innerText);
@@ -501,8 +501,8 @@ function setDislikes(dislikesCount) {
   getDislikeTextContainer()?.removeAttribute('is-empty');
   if (!isLikesDisabled()) {
     if (isMobile()) {
-      getButtons().children[1].querySelector(
-        ".button-renderer-text"
+      getButtons().querySelector(
+        "#text"
       ).innerText = dislikesCount;
       return;
     }
@@ -510,8 +510,8 @@ function setDislikes(dislikesCount) {
   } else {
     utils_cLog("likes count disabled by creator");
     if (isMobile()) {
-      getButtons().children[1].querySelector(
-        ".button-renderer-text"
+      getButtons().querySelector(
+        "#text"
       ).innerText = localize("TextLikesDisabled");
       return;
     }
@@ -710,13 +710,7 @@ function initializeNumberDisplayReformatLikes() {
       extConfig.numberDisplayReformatLikes = res.numberDisplayReformatLikes;
     }
   });
-}
-
-
-
-;
-
-
+};
 
 function getButtons() {
   if (isShorts()) {
@@ -744,10 +738,10 @@ function getButtons() {
 }
 
 function getLikeButton() {
-  return getButtons().children[0].tagName ===
+  return getButtons().querySelectorAll("*")[0].tagName ===
     "YTD-SEGMENTED-LIKE-DISLIKE-BUTTON-RENDERER"
-    ? getButtons().children[0].children[0]
-    : getButtons().children[0];
+    ? getButtons().querySelector("#segmented-like-button")
+    : getButtons().querySelectorAll("ytm-toggle-button-renderer")[0];
 }
 
 function getLikeTextContainer() {
@@ -759,10 +753,10 @@ function getLikeTextContainer() {
 }
 
 function getDislikeButton() {
-  return getButtons().children[0].tagName ===
+  return getButtons().querySelectorAll("*")[0].tagName ===
     "YTD-SEGMENTED-LIKE-DISLIKE-BUTTON-RENDERER"
-    ? getButtons().children[0].children[1]
-    : getButtons().children[1];
+    ? getButtons().querySelector("#segmented-dislike-button")
+    : getButtons().querySelectorAll("ytm-toggle-button-renderer")[1];
 }
 
 function getDislikeTextContainer() {
@@ -791,9 +785,6 @@ function checkForSignInButton() {
     return false;
   }
 }
-
-
-
 ;
 
 
@@ -928,13 +919,7 @@ function handleNumberDisplayFormatChangeEvent(value) {
 
 function handleNumberDisplayReformatLikesChangeEvent(value) {
   extConfig.numberDisplayReformatLikes = value;
-}
-
-
-
-;
-
-
+};
 
 
 initExtConfig();
@@ -963,5 +948,4 @@ document.addEventListener("yt-navigate-finish", function (event) {
   setEventListeners();
 });
 
-/******/ })()
-;
+})();
