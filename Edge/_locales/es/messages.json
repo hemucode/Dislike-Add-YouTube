@@ -1,0 +1,14 @@
+{
+   "app_description": {
+      "message": "La extensión devuelve la capacidad de ver cuántas personas han puesto no me gusta en un video de YouTube."
+   },
+   "app_name": {
+      "message": "No me gusta en YouTube™"
+   },
+   "donate": {
+      "message": "donación"
+   },
+   "rate": {
+      "message": "Por favor ayúdenos y califíquenos"
+   }
+}

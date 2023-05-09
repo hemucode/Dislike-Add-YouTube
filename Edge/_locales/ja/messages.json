@@ -1,0 +1,14 @@
+{
+   "app_description": {
+      "message": "この拡張機能は、YouTube 動画が嫌いな人が何人いるかを確認する機能を返します。"
+   },
+   "app_name": {
+      "message": "YouTube™ の嫌いなもの"
+   },
+   "donate": {
+      "message": "寄付"
+   },
+   "rate": {
+      "message": "私たちを助け、評価してください"
+   }
+}

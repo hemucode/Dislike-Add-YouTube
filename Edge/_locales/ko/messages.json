@@ -1,0 +1,14 @@
+{
+   "app_description": {
+      "message": "확장 프로그램은 YouTube 동영상에 싫어요를 표시한 사용자 수를 볼 수 있는 기능을 반환합니다."
+   },
+   "app_name": {
+      "message": "YouTube™의 싫어요"
+   },
+   "donate": {
+      "message": "기부"
+   },
+   "rate": {
+      "message": "도와주시고 평가해주세요"
+   }
+}

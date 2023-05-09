@@ -237,11 +237,16 @@ function createRateBarInternal (likes, dislikes) {
           }
         }
       } else {
-        document.getElementById("ryd-bar-container").style.width =
-          widthPx + "px";
-        document.getElementById("ryd-bar").style.width = widthPercent + "%";
-        document.querySelector("#ryd-dislike-tooltip > #tooltip").innerHTML =
-          tooltipInnerHTML;
+        if (document.getElementById("ryd-bar-container")) {
+          document.getElementById("ryd-bar-container").style.width = widthPx + "px";
+        }
+        if (document.getElementById("ryd-bar")) {
+          document.getElementById("ryd-bar").style.width = widthPercent + "%";
+        }
+        if (document.querySelector("#ryd-dislike-tooltip > #tooltip")) {
+            document.querySelector("#ryd-dislike-tooltip > #tooltip").innerHTML = tooltipInnerHTML;
+        }
+
         if (extConfig.coloredBar) {
           document.getElementById("ryd-bar-container").style.backgroundColor =
             getColorFromTheme(false);
@@ -369,12 +374,7 @@ function createStarRating(rating, isMobile) {
 </style>`;
 
   document.head.insertAdjacentHTML("beforeend", style);
-}
-
-
-
-;
-
+};
 
 const apiUrl = "https://returnyoutubedislikeapi.com";
 const LIKED_STATE = "LIKED_STATE";
@@ -454,10 +454,10 @@ if (isShorts() && mutationObserver.exists !== true) {
 function isLikesDisabled() {
   if (isMobile()) {
     return /^\D*$/.test(
-      getButtons().children[0].querySelector(".yt-core-attributed-string").innerText
+      getButtons().querySelector(".yt-core-attributed-string").innerText
     );
   }
-  return /^\D*$/.test(getButtons().children[0].innerText);
+  return /^\D*$/.test(getButtons().innerText);
 }
 
 function isVideoLiked() {

@@ -1,0 +1,14 @@
+{
+   "app_description": {
+      "message": "The extension returns the ability to see how many people YouTube video  have put dislikes."
+   },
+   "app_name": {
+      "message": "Dislikes in YouTube™"
+   },
+   "donate": {
+      "message": "donation"
+   },
+   "rate": {
+      "message": "Please help and rate us!"
+   }
+}
