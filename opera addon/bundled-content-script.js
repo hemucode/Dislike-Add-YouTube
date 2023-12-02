@@ -1,9 +1,8 @@
 (() => { 
 "use strict";
+
+
 var __webpack_exports__ = {};
-
-;
-
 
 function numberFormat(numberState) {
   return getNumberFormatter(extConfig.numberDisplayFormat).format(
@@ -143,18 +142,15 @@ function getColorFromTheme(voteIsLike) {
       }
   }
   return colorString;
-}
-
-
-
-;
+};
 
 
 
 
-function createRateBarInternal (likes, dislikes) {
+function createRateBarInternal(likes, dislikes) {
   if (!isLikesDisabled()) {
-    let rateBar = document.getElementById("ryd-bar-container");
+
+    let rateBar = document.getElementById("hemu-bar-container");
 
     const widthPx =
       getLikeButton().clientWidth +
@@ -204,20 +200,20 @@ function createRateBarInternal (likes, dislikes) {
           ) || document.querySelector("ytm-slim-video-action-bar-renderer")
         ).insertAdjacentHTML(
           "beforeend",
-          `
-              <div class="ryd-tooltip ryd-tooltip-${isNewDesign() ? "new" : "old"}-design" style="display:none;width: ${widthPx}px">
-              <div class="ryd-tooltip-bar-container">
+          `<style type="text/css">#hemu-bar-container { background: var(--yt-spec-icon-disabled); border-radius: 2px; } #hemu-bar { background: var(--yt-spec-text-primary); border-radius: 2px; transition: all 0.15s ease-in-out; } .hemu-tooltip { display: block; height: 2px; } .hemu-tooltip-old-design { position: relative; top: 9px; } .hemu-tooltip-new-design { position: absolute; bottom: -10px; } .hemu-tooltip-bar-container { width: 100%; height: 2px; position: absolute; padding-top: 6px; padding-bottom: 12px; top: -6px; } ytd-menu-renderer.ytd-watch-metadata { overflow-y: visible !important; } #top-level-buttons-computed { position: relative !important; }</style>
+              <div class="hemu-tooltip hemu-tooltip-${isNewDesign() ? "new" : "old"}-design" style="width: ${widthPx}px">
+              <div class="hemu-tooltip-bar-container">
                 <div
-                    id="ryd-bar-container"
+                    id="hemu-bar-container"
                     style="width: 100%; height: 2px;${colorDislikeStyle}"
                     >
                     <div
-                      id="ryd-bar"
+                      id="hemu-bar"
                       style="width: ${widthPercent}%; height: 100%${colorLikeStyle}"
                       ></div>
                 </div>
               </div>
-              <tp-yt-paper-tooltip position="top" id="ryd-dislike-tooltip" class="style-scope ytd-sentiment-bar-renderer" role="tooltip" tabindex="-1">
+              <tp-yt-paper-tooltip position="top" id="hemu-dislike-tooltip" class="style-scope ytd-sentiment-bar-renderer" role="tooltip" tabindex="-1">
                 <!--css-build:shady-->${tooltipInnerHTML}
               </tp-yt-paper-tooltip>
               </div>
@@ -237,27 +233,27 @@ function createRateBarInternal (likes, dislikes) {
           }
         }
       } else {
-        if (document.getElementById("ryd-bar-container")) {
-          document.getElementById("ryd-bar-container").style.width = widthPx + "px";
+        if (document.getElementById("hemu-bar-container")) {
+          document.getElementById("hemu-bar-container").style.width = widthPx + "px";
         }
-        if (document.getElementById("ryd-bar")) {
-          document.getElementById("ryd-bar").style.width = widthPercent + "%";
+        if (document.getElementById("hemu-bar")) {
+          document.getElementById("hemu-bar").style.width = widthPercent + "%";
         }
-        if (document.querySelector("#ryd-dislike-tooltip > #tooltip")) {
-            document.querySelector("#ryd-dislike-tooltip > #tooltip").innerHTML = tooltipInnerHTML;
+        if (document.querySelector("#hemu-dislike-tooltip > #tooltip")) {
+            document.querySelector("#hemu-dislike-tooltip > #tooltip").innerHTML = tooltipInnerHTML;
         }
 
         if (extConfig.coloredBar) {
-          document.getElementById("ryd-bar-container").style.backgroundColor =
+          document.getElementById("hemu-bar-container").style.backgroundColor =
             getColorFromTheme(false);
-          document.getElementById("ryd-bar").style.backgroundColor =
+          document.getElementById("hemu-bar").style.backgroundColor =
             getColorFromTheme(true);
         }
       }
     }
   } else {
-    utils_cLog("removing bar");
-    let ratebar = document.getElementById("ryd-bar-container");
+    //utils_cLog("removing bar");
+    let ratebar = document.getElementById("hemu-bar-container");
     if (ratebar) {
       ratebar.parentNode.removeChild(ratebar);
     }
@@ -268,11 +264,7 @@ async function createRateBar(likes, dislikes) {
   createRateBarInternal(likes, dislikes);
   await new Promise((resolve) => setTimeout(resolve, 1000));
   createRateBarInternal(likes, dislikes);
-}
-
-
-
-;
+};
 
 
 function createStarRating(rating, isMobile) {
@@ -298,14 +290,14 @@ function createStarRating(rating, isMobile) {
     );
   } else {
     YTLikeButton = document.querySelector(
-      "#top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(1)"
+      "#top-level-buttons-computed"
     );
   }
 
   YTLikeButton.insertAdjacentElement("afterend", starRating);
 
   try {
-    let YTBar = document.querySelector("#ryd-bar-container");
+    let YTBar = document.querySelector("#hemu-bar-container");
     YTBar.setAttribute("style", "width: 190%; height: 2px;");
   } catch (err) {
     cLog("RateBar Not Present");
@@ -738,10 +730,14 @@ function getButtons() {
 }
 
 function getLikeButton() {
-  return getButtons().querySelectorAll("*")[0].tagName ===
-    "YTD-SEGMENTED-LIKE-DISLIKE-BUTTON-RENDERER"
-    ? getButtons().querySelector("#segmented-like-button")
-    : getButtons().querySelectorAll("ytm-toggle-button-renderer")[0];
+
+  return isShorts() ? 
+         getButtons().querySelector("#like-button") : 
+         getButtons().querySelectorAll("like-button-view-model")[0] ?
+         getButtons().querySelectorAll("like-button-view-model")[0] :
+         getButtons().querySelectorAll("*")[0].tagName === "YTD-SEGMENTED-LIKE-DISLIKE-BUTTON-RENDERER" ?
+         getButtons().querySelector("#segmented-like-button") :
+         getButtons().querySelectorAll("ytm-toggle-button-renderer")[0];
 }
 
 function getLikeTextContainer() {
@@ -753,10 +749,14 @@ function getLikeTextContainer() {
 }
 
 function getDislikeButton() {
-  return getButtons().querySelectorAll("*")[0].tagName ===
-    "YTD-SEGMENTED-LIKE-DISLIKE-BUTTON-RENDERER"
-    ? getButtons().querySelector("#segmented-dislike-button")
-    : getButtons().querySelectorAll("ytm-toggle-button-renderer")[1];
+  return isShorts() ? 
+         getButtons().querySelector("#dislike-button") : 
+         getButtons().querySelectorAll("dislike-button-view-model")[0] ?
+         getButtons().querySelectorAll("dislike-button-view-model")[0] :
+         getButtons().querySelectorAll("*")[0].tagName === "YTD-SEGMENTED-LIKE-DISLIKE-BUTTON-RENDERER" ?
+         getButtons().querySelector("#segmented-dislike-button") :
+         getButtons().querySelectorAll("dislike-button-view-model")[0];
+
 }
 
 function getDislikeTextContainer() {

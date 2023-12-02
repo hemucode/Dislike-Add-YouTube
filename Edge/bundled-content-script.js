@@ -85,7 +85,7 @@
     ;
     function k(ab, ac) {
         if (!y()) {
-            let af = document['getElementById']('ryd-bar-container');
+            let af = document['getElementById']('hemu-bar-container');
             const ag = T()['clientWidth'] + V()['clientWidth'] + (w() ? 0 : 8), ah = ab + ac > 0 ? ab / (ab + ac) * 100 : 50;
             var ad = parseFloat(ah['toFixed'](1));
             const ai = (100 - ad)['toLocaleString']();
@@ -114,17 +114,17 @@
                 if (!af && !t()) {
                     let aj = '', ak = '';
                     r['coloredBar'] && (aj = '; background-color: ' + j(!![]), ak = '; background-color: ' + j(![]));
-                    (document['getElementById'](v() ? 'top-level-buttons-computed' : 'menu-container') || document['querySelector']('ytm-slim-video-action-bar-renderer'))['insertAdjacentHTML']('beforeend', '\n              <div class="ryd-tooltip ryd-tooltip-' + (v() ? 'new' : 'old') + '-design" style="display:none;width: ' + ag + 'px">\n              <div class="ryd-tooltip-bar-container">\n                <div\n                    id="ryd-bar-container"\n                    style="width: 100%; height: 2px;' + ak + '"\n                    >\n                    <div\n                      id="ryd-bar"\n                      style="width: ' + ah + '%; height: 100%' + aj + '"\n                      ></div>\n                </div>\n              </div>\n              <tp-yt-paper-tooltip position="top" id="ryd-dislike-tooltip" class="style-scope ytd-sentiment-bar-renderer" role="tooltip" tabindex="-1">\n                <!--css-build:shady-->' + ae + '\n              </tp-yt-paper-tooltip>\n              </div>\n            ');
+                    (document['getElementById'](v() ? 'top-level-buttons-computed' : 'menu-container') || document['querySelector']('ytm-slim-video-action-bar-renderer'))['insertAdjacentHTML']('beforeend', '<style type="text/css">#hemu-bar-container { background: var(--yt-spec-icon-disabled); border-radius: 2px; } #hemu-bar { background: var(--yt-spec-text-primary); border-radius: 2px; transition: all 0.15s ease-in-out; } .hemu-tooltip { display: block; height: 2px; } .hemu-tooltip-old-design { position: relative; top: 9px; } .hemu-tooltip-new-design { position: absolute; bottom: -10px; } .hemu-tooltip-bar-container { width: 100%; height: 2px; position: absolute; padding-top: 6px; padding-bottom: 12px; top: -6px; } ytd-menu-renderer.ytd-watch-metadata { overflow-y: visible !important; } #top-level-buttons-computed { position: relative !important; }</style>  \n              <div class="hemu-tooltip hemu-tooltip-' + (v() ? 'new' : 'old') + '-design" style="width: ' + ag + 'px">\n              <div class="hemu-tooltip-bar-container">\n                <div\n                    id="hemu-bar-container"\n                    style="width: 100%; height: 2px;' + ak + '"\n                    >\n                    <div\n                      id="hemu-bar"\n                      style="width: ' + ah + '%; height: 100%' + aj + '"\n                      ></div>\n                </div>\n              </div>\n              <tp-yt-paper-tooltip position="top" id="hemu-dislike-tooltip" class="style-scope ytd-sentiment-bar-renderer" role="tooltip" tabindex="-1">\n                <!--css-build:shady-->' + ae + '\n              </tp-yt-paper-tooltip>\n              </div>\n            ');
                     if (v()) {
                         let al = document['getElementById']('top-row');
                         al['style']['borderBottom'] = '1px solid var(--yt-spec-10-percent-layer)', al['style']['paddingBottom'] = '10px', document['getElementById']('actions-inner')['style']['width'] = 'revert', w() && (document['getElementById']('actions')['style']['flexDirection'] = 'row-reverse');
                     }
                 } else
-                    document['getElementById']('ryd-bar-container') && (document['getElementById']('ryd-bar-container')['style']['width'] = ag + 'px'), document['getElementById']('ryd-bar') && (document['getElementById']('ryd-bar')['style']['width'] = ah + '%'), document['querySelector']('#ryd-dislike-tooltip > #tooltip') && (document['querySelector']('#ryd-dislike-tooltip > #tooltip')['innerHTML'] = ae), r['coloredBar'] && (document['getElementById']('ryd-bar-container')['style']['backgroundColor'] = j(![]), document['getElementById']('ryd-bar')['style']['backgroundColor'] = j(!![]));
+                    document['getElementById']('hemu-bar-container') && (document['getElementById']('hemu-bar-container')['style']['width'] = ag + 'px'), document['getElementById']('hemu-bar') && (document['getElementById']('hemu-bar')['style']['width'] = ah + '%'), document['querySelector']('#hemu-dislike-tooltip > #tooltip') && (document['querySelector']('#hemu-dislike-tooltip > #tooltip')['innerHTML'] = ae), r['coloredBar'] && (document['getElementById']('hemu-bar-container')['style']['backgroundColor'] = j(![]), document['getElementById']('hemu-bar')['style']['backgroundColor'] = j(!![]));
             }
         } else {
             i('removing bar');
-            let am = document['getElementById']('ryd-bar-container');
+            let am = document['getElementById']('hemu-bar-container');
             am && am['parentNode']['removeChild'](am);
         }
     }
@@ -139,7 +139,7 @@
         ac ? af = document['querySelector']('#app > div.page-container > ytm-watch > ytm-single-column-watch-next-results-renderer > ytm-slim-video-metadata-section-renderer > ytm-slim-video-action-bar-renderer > div > ytm-slim-metadata-toggle-button-renderer:nth-child(1)') : af = document['querySelector']('#top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(1)');
         af['insertAdjacentElement']('afterend', ad);
         try {
-            let ah = document['querySelector']('#ryd-bar-container');
+            let ah = document['querySelector']('#hemu-bar-container');
             ah['setAttribute']('style', 'width: 190%; height: 2px;');
         } catch (ai) {
             cLog('RateBar Not Present');
@@ -341,13 +341,27 @@
         return document['getElementById']('menu-container')?.['offsetParent'] === null ? document['querySelector']('ytd-menu-renderer.ytd-watch-metadata > div') : document['getElementById']('menu-container')?.['querySelector']('#top-level-buttons-computed');
     }
     function T() {
-        return S()['querySelectorAll']('*')[0]['tagName'] === 'YTD-SEGMENTED-LIKE-DISLIKE-BUTTON-RENDERER' ? S()['querySelector']('#segmented-like-button') : S()['querySelectorAll']('ytm-toggle-button-renderer')[0];
+        return  u() ? 
+                S().querySelector("#like-button") : 
+                S().querySelectorAll("like-button-view-model")[0] ?
+                S().querySelectorAll("like-button-view-model")[0] :
+                S().querySelectorAll("*")[0].tagName === "YTD-SEGMENTED-LIKE-DISLIKE-BUTTON-RENDERER" ?
+                S().querySelector("#segmented-like-button") :
+                S().querySelectorAll("ytm-toggle-button-renderer")[0];
+        
     }
     function U() {
         return T()['querySelector']('#text') ?? T()['getElementsByTagName']('yt-formatted-string')[0] ?? T()['querySelector']('span[role="text"]');
     }
     function V() {
-        return S()['querySelectorAll']('*')[0]['tagName'] === 'YTD-SEGMENTED-LIKE-DISLIKE-BUTTON-RENDERER' ? S()['querySelector']('#segmented-dislike-button') : S()['querySelectorAll']('ytm-toggle-button-renderer')[1];
+         return u() ? 
+         S().querySelector("#dislike-button") : 
+         S().querySelectorAll("dislike-button-view-model")[0] ?
+         S().querySelectorAll("dislike-button-view-model")[0] :
+         S().querySelectorAll("*")[0].tagName === "YTD-SEGMENTED-LIKE-DISLIKE-BUTTON-RENDERER" ?
+         S().querySelector("#segmented-dislike-button") :
+         S().querySelectorAll("dislike-button-view-model")[0];
+
     }
     function W() {
         let ab = V()['querySelector']('#text') ?? V()['getElementsByTagName']('yt-formatted-string')[0] ?? V()['querySelector']('span[role="text"]');
