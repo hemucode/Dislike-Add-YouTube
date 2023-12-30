@@ -6,7 +6,7 @@
          "48": "data/icons/48.png",
          "64": "data/icons/64.png"
       },
-      "default_popup": "data/interface/index.html?popup",
+      "default_popup": "data/interface/index.html",
       "default_title": "__MSG_app_name__"
    },
    "background": {
@@ -35,5 +35,5 @@
    "name": "__MSG_app_name__",
    "permissions": [ "storage" ],
    "short_name": "ydislike",
-   "version": "1.1.5"
+   "version": "2.0.0"
 }

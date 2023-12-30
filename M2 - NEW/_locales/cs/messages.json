@@ -1,0 +1,14 @@
+{
+   "app_description": {
+      "message": "Rozšíření vrací možnost zjistit, kolika lidem se video na YouTube nelíbí."
+   },
+   "app_name": {
+      "message": "Dislikes in YouTube™"
+   },
+   "rate": {
+      "message" :"Pomozte nám a ohodnoťte nás"
+   },
+   "donate":{
+      "message" :"dar"
+   }
+}
